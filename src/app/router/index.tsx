@@ -23,6 +23,15 @@ import { MigrationList, MigrationForm } from '@/features/migration';
 
 // 사장님 페이지
 import { OwnerLoginPage } from '@/features/auth/pages/OwnerLoginPage';
+import {
+  StoreListPage,
+  StoreCreatePage,
+  StoreDetailPage,
+  StoreHistoryPage,
+  StoreMigrationsPage,
+  StampCardCreatePage,
+  StampCardStatsPage,
+} from '@/pages/owner';
 
 // 터미널 페이지
 import { TerminalDashboardPage } from '@/features/terminal/pages/TerminalDashboardPage';
@@ -60,13 +69,13 @@ export const router = createBrowserRouter([
     element: <OwnerLayout />,
     children: [
       { path: 'login', element: <OwnerLoginPage /> },
-      { path: 'stores', element: <div>StoreListPage (TODO)</div> },
-      { path: 'stores/new', element: <div>StoreCreatePage (TODO)</div> },
-      { path: 'stores/:storeId', element: <div>StoreDetailPage (TODO)</div> },
-      { path: 'stores/:storeId/history', element: <div>StoreHistoryPage (TODO)</div> },
-      { path: 'stores/:storeId/migrations', element: <div>StoreMigrationsPage (TODO)</div> },
-      { path: 'stores/:storeId/stamp-cards/new', element: <div>StampCardCreatePage (TODO)</div> },
-      { path: 'stores/:storeId/stamp-cards/:cardId/stats', element: <div>StampCardStatsPage (TODO)</div> },
+      { path: 'stores', element: <StoreListPage /> },
+      { path: 'stores/new', element: <StoreCreatePage /> },
+      { path: 'stores/:storeId', element: <StoreDetailPage /> },
+      { path: 'stores/:storeId/history', element: <StoreHistoryPage /> },
+      { path: 'stores/:storeId/migrations', element: <StoreMigrationsPage /> },
+      { path: 'stores/:storeId/stamp-cards/new', element: <StampCardCreatePage /> },
+      { path: 'stores/:storeId/stamp-cards/:cardId/stats', element: <StampCardStatsPage /> },
     ],
   },
 
