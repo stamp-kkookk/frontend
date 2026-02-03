@@ -32,7 +32,7 @@ export function WalletPage() {
   };
 
   return (
-    <div className="flex-1 bg-kkookk-sand flex flex-col min-h-screen">
+    <div className="flex-1 flex flex-col min-h-screen">
       <WalletHeader onMenuClick={() => setIsMenuOpen(true)} />
 
       <div className="flex-1 flex flex-col justify-center">

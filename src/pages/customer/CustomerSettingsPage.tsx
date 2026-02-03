@@ -10,9 +10,9 @@ export function CustomerSettingsPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full bg-kkookk-sand flex flex-col">
+    <div className="h-full flex flex-col">
       {/* 헤더 */}
-      <div className="px-6 py-4 border-b border-slate-100 flex items-center bg-white sticky top-0 z-10">
+      <div className="px-6 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center sticky top-0 bg-white z-10">
         <button
           onClick={() => navigate('/customer/wallet')}
           className="p-2 -ml-2 text-kkookk-steel hover:text-kkookk-navy"
@@ -24,7 +24,7 @@ export function CustomerSettingsPage() {
       </div>
 
       {/* 설정 목록 */}
-      <div className="bg-white mt-2 border-t border-b border-slate-100">
+      <div className="border-t border-slate-100">
         <div className="p-4 border-b border-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-50">
           <span className="text-kkookk-navy font-medium">알림 설정</span>
           <div className="w-10 h-6 bg-kkookk-orange-500 rounded-full relative">

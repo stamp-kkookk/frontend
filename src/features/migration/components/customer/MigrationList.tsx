@@ -32,9 +32,9 @@ export function MigrationList({
   };
 
   return (
-    <div className="h-full bg-kkookk-sand flex flex-col pt-12">
+    <div className="h-full flex flex-col pt-12">
       {/* 헤더 */}
-      <div className="px-6 py-4 bg-white border-b border-slate-100 flex items-center justify-between sticky top-0 z-10 -mt-12 pt-12">
+      <div className="px-6 py-4 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between sticky top-0 z-10 -mt-12 pt-12">
         <div className="flex items-center">
           <button
             onClick={() => navigate('/customer/wallet')}

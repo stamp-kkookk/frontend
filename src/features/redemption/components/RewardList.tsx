@@ -21,9 +21,9 @@ export function RewardList({ rewards = MOCK_REWARDS }: RewardListProps) {
   };
 
   return (
-    <div className="h-full bg-kkookk-sand flex flex-col relative pt-12">
+    <div className="h-full flex flex-col relative pt-12">
       {/* 헤더 */}
-      <div className="px-6 py-4 bg-white border-b border-slate-100 flex items-center sticky top-0 z-10 -mt-12 pt-12">
+      <div className="px-6 py-4 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center sticky top-0 z-10 -mt-12 pt-12">
         <button
           onClick={() => navigate('/customer/wallet')}
           className="p-2 -ml-2 text-kkookk-steel hover:text-kkookk-navy"

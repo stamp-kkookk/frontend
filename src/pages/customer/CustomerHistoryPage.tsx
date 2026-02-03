@@ -35,7 +35,7 @@ export function CustomerHistoryPage({
   return (
     <div className="h-full bg-white flex flex-col">
       {/* 헤더 */}
-      <div className="px-6 py-4 border-b border-slate-100 flex items-center sticky top-0 bg-white z-10 justify-between">
+      <div className="px-6 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center sticky top-0 bg-white z-10 justify-between">
         <div className="flex items-center">
           <button
             onClick={() => navigate('/customer/wallet')}

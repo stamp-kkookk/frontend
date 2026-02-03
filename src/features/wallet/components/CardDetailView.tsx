@@ -29,7 +29,7 @@ export function CardDetailView() {
   return (
     <div className="h-full bg-white flex flex-col pt-12">
       {/* 헤더 */}
-      <div className="px-6 py-4 border-b border-slate-100 flex items-center">
+      <div className="px-6 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center">
         <button
           onClick={() => navigate('/customer/wallet')}
           className="p-2 -ml-2 text-kkookk-steel"

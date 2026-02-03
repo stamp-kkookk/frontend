@@ -44,9 +44,9 @@ export function MobileFrame({
         )}
       >
         {/* 메인 콘텐츠 영역 - 전체 높이 사용 */}
-        <div className="flex-1 flex flex-col no-scrollbar">
+        <main className="flex-1 flex flex-col no-scrollbar bg-white">
           {children}
-        </div>
+        </main>
 
         {/* 슬라이드 아웃 메뉴 */}
         {isMenuOpen && (

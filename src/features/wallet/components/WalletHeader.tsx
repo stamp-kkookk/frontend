@@ -15,7 +15,7 @@ export function WalletHeader({
   onMenuClick,
 }: WalletHeaderProps) {
   return (
-    <div className="flex justify-between items-center px-6 pt-12 pb-4">
+    <div className="flex justify-between items-center px-6 pt-12 pb-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
       <h1 className="text-2xl font-bold text-kkookk-navy">{title}</h1>
       <button
         onClick={onMenuClick}

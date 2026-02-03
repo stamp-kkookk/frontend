@@ -80,7 +80,7 @@ export function MigrationForm({
   return (
     <div className="h-full bg-white flex flex-col pt-12">
       {/* 헤더 */}
-      <div className="px-6 py-4 border-b border-slate-100 flex items-center sticky top-0 bg-white z-10 -mt-12 pt-12">
+      <div className="px-6 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center sticky top-0 bg-white z-10 -mt-12 pt-12">
         <button
           onClick={() => navigate('/customer/migrations')}
           className="p-2 -ml-2 text-kkookk-steel hover:text-kkookk-navy"
