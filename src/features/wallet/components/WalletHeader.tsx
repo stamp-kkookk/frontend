@@ -1,6 +1,6 @@
 /**
- * WalletHeader Component
- * Header for the wallet page with menu toggle
+ * WalletHeader 컴포넌트
+ * 메뉴 토글이 있는 지갑 페이지 헤더
  */
 
 import { Menu } from 'lucide-react';

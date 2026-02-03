@@ -1,21 +1,20 @@
 /**
- * CustomerSettingsPage Component
- * Settings page for customer app
+ * CustomerSettingsPage 컴포넌트
+ * 고객 앱 설정 페이지
  */
 
+import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface CustomerSettingsPageProps {
-  onBack: () => void;
-}
+export function CustomerSettingsPage() {
+  const navigate = useNavigate();
 
-export function CustomerSettingsPage({ onBack }: CustomerSettingsPageProps) {
   return (
     <div className="h-full bg-kkookk-sand flex flex-col">
-      {/* Header */}
+      {/* 헤더 */}
       <div className="px-6 py-4 border-b border-slate-100 flex items-center bg-white sticky top-0 z-10">
         <button
-          onClick={onBack}
+          onClick={() => navigate('/customer/wallet')}
           className="p-2 -ml-2 text-kkookk-steel hover:text-kkookk-navy"
           aria-label="뒤로 가기"
         >
@@ -24,7 +23,7 @@ export function CustomerSettingsPage({ onBack }: CustomerSettingsPageProps) {
         <h1 className="font-bold text-lg ml-2 text-kkookk-navy">설정</h1>
       </div>
 
-      {/* Settings List */}
+      {/* 설정 목록 */}
       <div className="bg-white mt-2 border-t border-b border-slate-100">
         <div className="p-4 border-b border-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-50">
           <span className="text-kkookk-navy font-medium">알림 설정</span>
