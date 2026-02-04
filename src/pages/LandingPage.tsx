@@ -10,7 +10,7 @@ import {
   HeroSection,
   ProblemSection,
   ReviewSection,
-  SecuritySection,
+  GuaranteeSection,
   SolvingSection,
 } from "@/features/landing/components";
 import { LandingHeader } from "@/features/landing/components/LandingHeader";
@@ -26,7 +26,7 @@ export function LandingPage() {
         <HeroSection />
         <ProblemSection />
         <SolvingSection />
-        <SecuritySection />
+        <GuaranteeSection />
         <ReviewSection />
         <FAQSection />
       </main>

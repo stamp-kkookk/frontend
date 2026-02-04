@@ -4,9 +4,9 @@
  * 실제 서비스 UI 기반 인터랙티브 데모
  */
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const steps = [
   {
@@ -59,11 +59,11 @@ export function SolvingSection() {
     setIsAnimating(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     await typeText("꾸욱 카페", (val) =>
-      setDesign((prev) => ({ ...prev, storeName: val }))
+      setDesign((prev) => ({ ...prev, storeName: val })),
     );
     await new Promise((resolve) => setTimeout(resolve, 300));
     await typeText("단골 스탬프", (val) =>
-      setDesign((prev) => ({ ...prev, cardName: val }))
+      setDesign((prev) => ({ ...prev, cardName: val })),
     );
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsAnimating(false);
@@ -110,7 +110,7 @@ export function SolvingSection() {
 
     await new Promise((resolve) => setTimeout(resolve, 300));
     await typeText("아메리카노 1잔 무료", (val) =>
-      setDesign((prev) => ({ ...prev, reward: val }))
+      setDesign((prev) => ({ ...prev, reward: val })),
     );
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
@@ -147,7 +147,7 @@ export function SolvingSection() {
   };
 
   return (
-    <section className="relative py-32 overflow-hidden bg-white">
+    <section className="relative py-20 overflow-hidden bg-white">
       <div className="px-6 mx-auto max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left: Text Content */}
@@ -320,7 +320,7 @@ export function SolvingSection() {
                                 key={design.maxStamps}
                                 initial={{ scale: 1.5, color: "#ff4d00" }}
                                 animate={{ scale: 1, color: "#1a1c1e" }}
-                                className="text-2xl font-bold text-center text-kkookk-navy w-12"
+                                className="w-12 text-2xl font-bold text-center text-kkookk-navy"
                               >
                                 {design.maxStamps}
                               </motion.span>
@@ -404,7 +404,7 @@ export function SolvingSection() {
                                   </span>
                                 )}
                               </motion.div>
-                            )
+                            ),
                           )}
                         </div>
                       </div>

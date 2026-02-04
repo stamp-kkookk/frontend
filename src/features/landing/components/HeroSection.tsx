@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden py-25 ">
+    <section className="relative py-20 overflow-hidden ">
       {/* Headline + CTA - 중앙 배치 */}
       <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
         <AnimatedHeadline />
@@ -29,7 +29,7 @@ export function HeroSection() {
  */
 function AnimatedHeadline() {
   return (
-    <h1 className="mb-6 text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl text-kkookk-navy">
+    <h1 className="mb-6 text-4xl font-semibold leading-tight lg:text-5xl text-kkookk-navy">
       매출로 이어지는 맞춤형 스탬프,
       <br />
       <span className="text-kkookk-orange-500">꾸욱</span> 찍어보세요!
@@ -240,8 +240,7 @@ function BeforeAfterCard({
     >
       {/* Before - 왼쪽 상단 */}
       <div className="absolute w-72 top-4 left-4">
-        <div className="w-full aspect-[1.58/1] bg-kkookk-sand rounded-xl shadow-md relative overflow-hidden border-2 border-dashed border-kkookk-steel/30 flex items-center justify-center">
-          {/* 실물 스탬프 사진 플레이스홀더 */}
+        <div className="p-4 w-full aspect-[1.58/1] bg-kkookk-sand rounded-xl shadow-md relative overflow-hidden border-2 border-dashed border-kkookk-steel/30 ">
           <span className="text-sm font-medium text-kkookk-steel/60">
             (실물 스탬프 사진)
           </span>
