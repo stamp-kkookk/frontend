@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export function LandingHeader() {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-black/5">
-      <div className="flex items-center justify-between h-16 px-6 mx-auto max-w-7xl">
+      <div className="flex items-center justify-between h-16 px-6 mx-auto max-w-7xl`">
         {/* Logo */}
         <Link to={"/"} className="flex items-center">
           <img

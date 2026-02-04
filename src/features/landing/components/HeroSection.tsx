@@ -57,12 +57,6 @@ function CrossCarousel() {
       expiryDays: 20,
     },
     {
-      backgroundImage: "/src/mock/mock-background3.png",
-      storeName: "카페드 플로르",
-      stampCount: 3,
-      expiryDays: 7,
-    },
-    {
       backgroundImage: "/src/mock/mock-background4.png",
       storeName: "베이커리 온리",
       stampCount: 12,
@@ -78,6 +72,24 @@ function CrossCarousel() {
       backgroundImage: "/src/mock/mock-background6.png",
       storeName: "블루보틀 성수",
       stampCount: 9,
+      expiryDays: 10,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background7.png",
+      storeName: "상수 Breing",
+      stampCount: 1,
+      expiryDays: 13,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background8.png",
+      storeName: "홍대 콤마",
+      stampCount: 9,
+      expiryDays: 16,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background9.png",
+      storeName: "합정 블루스",
+      stampCount: 4,
       expiryDays: 10,
     },
   ];
