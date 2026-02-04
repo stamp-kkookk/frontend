@@ -1,0 +1,280 @@
+/**
+ * HeroSection
+ * 히어로 섹션 - 핵심 메시지 + CTA + 교차 캐러셀
+ */
+
+import { Coffee } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+export function HeroSection() {
+  return (
+    <section className="relative overflow-hidden py-25 ">
+      {/* Headline + CTA - 중앙 배치 */}
+      <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
+        <AnimatedHeadline />
+        <button className="px-6 py-4 text-base font-semibold text-white transition-all rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-md hover:shadow-kkookk-lg">
+          스탬프 생성하러 가기
+        </button>
+      </div>
+
+      {/* Carousel - 2개 레이어 교차 */}
+      <CrossCarousel />
+    </section>
+  );
+}
+
+/**
+ * AnimatedHeadline
+ * 헤드라인
+ */
+function AnimatedHeadline() {
+  return (
+    <h1 className="mb-6 text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl text-kkookk-navy">
+      매출로 이어지는 맞춤형 스탬프,
+      <br />
+      <span className="text-kkookk-orange-500">꾸욱</span> 찍어보세요!
+    </h1>
+  );
+}
+
+/**
+ * CrossCarousel
+ * 2개 레이어 교차 캐러셀 (위: 오른쪽, 아래: 왼쪽)
+ */
+function CrossCarousel() {
+  // 카드 데이터
+  const cardsData = [
+    {
+      backgroundImage: "/src/mock/mock-background1.png",
+      storeName: "스타벅스 강남점",
+      stampCount: 8,
+      expiryDays: 12,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background2.png",
+      storeName: "투썸플레이스 역삼",
+      stampCount: 5,
+      expiryDays: 20,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background3.png",
+      storeName: "카페드 플로르",
+      stampCount: 3,
+      expiryDays: 7,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background4.png",
+      storeName: "베이커리 온리",
+      stampCount: 12,
+      expiryDays: 25,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background5.png",
+      storeName: "폴바셋 테헤란",
+      stampCount: 6,
+      expiryDays: 15,
+    },
+    {
+      backgroundImage: "/src/mock/mock-background6.png",
+      storeName: "블루보틀 성수",
+      stampCount: 9,
+      expiryDays: 10,
+    },
+  ];
+
+  return <CarouselLayer cards={cardsData} direction="right" />;
+}
+
+/**
+ * CarouselLayer
+ * 단일 캐러셀 레이어 (드래그 가능)
+ */
+interface CarouselLayerProps {
+  cards: Array<{
+    backgroundImage: string;
+    storeName: string;
+    stampCount: number;
+    expiryDays: number;
+  }>;
+  direction: "left" | "right";
+}
+
+function CarouselLayer({ cards, direction }: CarouselLayerProps) {
+  const [offset, setOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 자동 스크롤 + 무한 루프
+  useEffect(() => {
+    if (isDragging) return;
+
+    const cardWidth = 380 + 16; // card width + gap
+    const totalWidth = cardWidth * cards.length;
+
+    const interval = setInterval(() => {
+      setOffset((prev) => {
+        const speed = 0.5;
+        let newOffset = direction === "right" ? prev + speed : prev - speed;
+
+        // 무한 루프: offset이 한 세트를 넘어가면 리셋
+        if (direction === "right" && newOffset > totalWidth) {
+          newOffset = newOffset - totalWidth;
+        } else if (direction === "left" && newOffset < -totalWidth) {
+          newOffset = newOffset + totalWidth;
+        }
+
+        return newOffset;
+      });
+    }, 16); // ~60fps
+
+    return () => clearInterval(interval);
+  }, [direction, isDragging, cards.length]);
+
+  // 드래그 시작
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setStartX(e.pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollLeft(offset);
+  };
+
+  // 드래그 중
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (containerRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 2; // 드래그 방향대로 스크롤: 오른쪽 드래그 → 오른쪽 컨텐츠 보기
+    setOffset(scrollLeft + walk);
+  };
+
+  // 드래그 종료
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  // 키보드 지원
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      setOffset((prev) => prev - 50);
+    } else if (e.key === "ArrowRight") {
+      setOffset((prev) => prev + 50);
+    }
+  };
+
+  // 무한 스크롤을 위한 카드 복제
+  const infiniteCards = [...cards, ...cards, ...cards];
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden cursor-grab active:cursor-grabbing"
+      role="region"
+      aria-label="스탬프 카드 캐러셀"
+      tabIndex={0}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        className="flex gap-4 py-4"
+        style={{
+          transform: `translateX(${-offset}px)`,
+          transition: isDragging ? "none" : "transform 0.1s linear",
+        }}
+      >
+        {infiniteCards.map((card, index) => (
+          <div key={index} className="shrink-0">
+            <BeforeAfterCard
+              backgroundImage={card.backgroundImage}
+              storeName={card.storeName}
+              stampCount={card.stampCount}
+              expiryDays={card.expiryDays}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * BeforeAfterCard
+ * 380x360 크기의 Before/After 카드 - 겹침 레이아웃
+ */
+interface BeforeAfterCardProps {
+  backgroundImage: string;
+  storeName: string;
+  stampCount: number;
+  expiryDays: number;
+}
+
+function BeforeAfterCard({
+  backgroundImage,
+  storeName,
+  stampCount,
+  expiryDays,
+}: BeforeAfterCardProps) {
+  return (
+    <div
+      className="relative flex p-4 transition-all duration-300 bg-white rounded-2xl shadow-kkookk-md hover:shadow-kkookk-lg hover:scale-105"
+      style={{ width: "380px", height: "360px" }}
+    >
+      {/* Before - 왼쪽 상단 */}
+      <div className="absolute w-72 top-4 left-4">
+        <div className="w-full aspect-[1.58/1] bg-kkookk-sand rounded-xl shadow-md relative overflow-hidden border-2 border-dashed border-kkookk-steel/30 flex items-center justify-center">
+          {/* 실물 스탬프 사진 플레이스홀더 */}
+          <span className="text-sm font-medium text-kkookk-steel/60">
+            (실물 스탬프 사진)
+          </span>
+        </div>
+      </div>
+
+      {/* After - 오른쪽 하단 (Before와 겹침) */}
+      <div className="absolute right-2 bottom-14 w-80">
+        <div
+          className="w-full aspect-[1.58/1] rounded-xl p-3.5 text-white shadow-xl relative overflow-hidden bg-cover bg-center"
+          style={{ backgroundImage: `url(${backgroundImage})` }}
+        >
+          {/* 배경 오버레이 (가독성 향상) */}
+          <div className="absolute inset-0 bg-black/20 rounded-xl" />
+
+          {/* StampCardItem 스타일 */}
+          <div className="relative z-10 flex flex-col justify-between h-full">
+            {/* 헤더 */}
+            <div className="flex items-start justify-between">
+              <span className="text-sm font-bold opacity-90 drop-shadow-md">
+                {storeName}
+              </span>
+              <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] backdrop-blur-sm font-medium">
+                D-{expiryDays}
+              </span>
+            </div>
+
+            {/* 푸터 */}
+            <div>
+              <p className="text-white/80 text-[8px] font-medium mb-0.5">
+                현재 스탬프
+              </p>
+              <p className="text-xl font-bold leading-none text-white drop-shadow-sm">
+                {stampCount}개
+              </p>
+            </div>
+          </div>
+
+          {/* 배경 아이콘 */}
+          <Coffee
+            className="absolute w-20 h-20 transform -right-1 -bottom-2 text-white/10 rotate-12"
+            strokeWidth={1}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
