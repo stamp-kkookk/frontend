@@ -19,7 +19,7 @@ export function LandingHeader() {
         </Link>
 
         {/* CTA */}
-        <button className="flex items-center h-10 px-6 py-4 font-semibold text-white transition-all rounded-2xl bg-kkookk-indigo hover:bg-kkookk-indigo/90 ">
+        <button className="flex items-center h-10 px-5 py-2.5 font-semibold text-white transition-all rounded-2xl bg-kkookk-indigo hover:bg-kkookk-indigo/90 ">
           문의하기
         </button>
       </div>

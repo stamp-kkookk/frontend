@@ -7,12 +7,23 @@ import { Coffee, Stamp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export function HeroSection() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section className="relative pt-20 pb-10 overflow-hidden">
       {/* Headline + CTA - 중앙 배치 */}
       <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
         <AnimatedHeadline />
-        <button className="px-8 py-4 text-lg font-bold text-white transition-all shadow-lg rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-orange-500/30 hover:shadow-kkookk-orange-500/40">
+        <button
+          className={`px-8 py-4 text-lg font-bold text-white shadow-lg rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-orange-500/30 hover:shadow-kkookk-orange-500/40 transition-all duration-500 ${
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+          style={{ transitionDelay: "350ms" }}
+        >
           무료 스탬프 만들기
         </button>
       </div>
@@ -25,15 +36,47 @@ export function HeroSection() {
 
 /**
  * AnimatedHeadline
- * 헤드라인
+ * 헤드라인 - 글자별 슬라이드 애니메이션
  */
 function AnimatedHeadline() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 텍스트를 줄과 부분별로 구성
+  const line1 = "매출로 이어지는 맞춤형 스탬프,";
+  const line2Part1 = "꾸욱"; // 오렌지 강조
+  const line2Part2 = "으로 시작하세요!";
+
+  let charIndex = 0;
+
+  // 각 글자를 애니메이션 span으로 렌더링
+  const renderChar = (char: string, isOrange = false) => {
+    const index = charIndex++;
+    return (
+      <span
+        key={index}
+        className={`inline-block transition-all duration-300 ${
+          mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+        } ${isOrange ? "font-bold text-kkookk-orange-500" : ""}`}
+        style={{ transitionDelay: `${index * 20}ms` }}
+      >
+        {char === " " ? "\u00A0" : char}
+      </span>
+    );
+  };
+
   return (
-    <h1 className="mb-8 text-4xl font-semibold leading-tight tracking-tight lg:text-5xl text-kkookk-navy">
-      매출로 이어지는 맞춤형 스탬프,
+    <h1
+      className="mb-8 text-4xl font-semibold tracking-normal lg:text-5xl text-kkookk-navy"
+      style={{ lineHeight: "1.15" }}
+    >
+      {line1.split("").map((char) => renderChar(char))}
       <br />
-      <span className="font-bold text-kkookk-orange-500">꾸욱</span>으로
-      시작하세요!
+      {line2Part1.split("").map((char) => renderChar(char, true))}
+      {line2Part2.split("").map((char) => renderChar(char))}
     </h1>
   );
 }
@@ -117,7 +160,13 @@ function CarouselLayer({ cards, direction }: CarouselLayerProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // 페이드인 애니메이션
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // 자동 스크롤 + 무한 루프
   useEffect(() => {
@@ -185,7 +234,10 @@ function CarouselLayer({ cards, direction }: CarouselLayerProps) {
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden cursor-grab active:cursor-grabbing"
+      className={`relative overflow-hidden cursor-grab active:cursor-grabbing transition-opacity duration-700 ${
+        mounted ? "opacity-100" : "opacity-0"
+      }`}
+      style={{ transitionDelay: "400ms" }}
       role="region"
       aria-label="스탬프 카드 캐러셀"
       tabIndex={0}
