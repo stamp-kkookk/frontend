@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+button {
+  cursor: pointer;
+}
+
 /* ============================================
    SHADCN UI CSS VARIABLES
    Mapped to KKOOKK brand colors for consistency
@@ -140,23 +144,24 @@ body {
   }
 
   .p-safe {
-    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+      env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
   }
 
   .btn-primary {
-    @apply h-14 px-6 rounded-2xl bg-kkookk-orange-500 text-white font-semibold active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-6 font-semibold text-white transition-all h-14 rounded-2xl bg-kkookk-orange-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-secondary {
-    @apply h-14 px-6 rounded-2xl bg-kkookk-indigo text-white font-semibold active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-6 font-semibold text-white transition-all h-14 rounded-2xl bg-kkookk-indigo active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-outline {
-    @apply h-14 px-6 rounded-2xl border-2 border-kkookk-orange-500 text-kkookk-orange-600 font-semibold active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-6 font-semibold transition-all border-2 h-14 rounded-2xl border-kkookk-orange-500 text-kkookk-orange-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-ghost {
-    @apply h-14 px-6 rounded-2xl text-kkookk-orange-600 font-semibold hover:bg-kkookk-orange-50 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-6 font-semibold transition-all h-14 rounded-2xl text-kkookk-orange-600 hover:bg-kkookk-orange-50 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   /* Toast animations */
@@ -226,7 +231,8 @@ body {
 }
 
 @keyframes pulseSlow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -235,7 +241,8 @@ body {
 }
 
 @keyframes pulseBadge {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
