@@ -7,17 +7,17 @@
 import {
   FAQSection,
   FooterSection,
+  GuaranteeSection,
   HeroSection,
   ProblemSection,
   ReviewSection,
-  GuaranteeSection,
   SolvingSection,
 } from "@/features/landing/components";
 import { LandingHeader } from "@/features/landing/components/LandingHeader";
 
 export function LandingPage() {
   return (
-    <div className="min-h-screen bg-white bg-linear-to-b">
+    <div className="relative min-h-screen bg-white isolate">
       {/* Header */}
       <LandingHeader />
 

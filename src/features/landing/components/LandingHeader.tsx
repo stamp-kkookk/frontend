@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 
 export function LandingHeader() {
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-black/5">
-      <div className="flex items-center justify-between h-16 px-6 mx-auto max-w-7xl`">
+    <header className="sticky top-0 z-50 bg-white border-b border-black/5 backdrop-blur-md">
+      <div className="flex items-center justify-between h-16 px-6 mx-auto max-w-7xl">
         {/* Logo */}
         <Link to={"/"} className="flex items-center">
           <img
@@ -19,7 +19,7 @@ export function LandingHeader() {
         </Link>
 
         {/* CTA */}
-        <button className="h-10 px-6 font-semibold text-white transition-colors rounded-2xl bg-kkookk-indigo hover:bg-kkookk-indigo/90">
+        <button className="flex items-center h-10 px-6 py-4 font-semibold text-white transition-all rounded-2xl bg-kkookk-indigo hover:bg-kkookk-indigo/90 ">
           문의하기
         </button>
       </div>

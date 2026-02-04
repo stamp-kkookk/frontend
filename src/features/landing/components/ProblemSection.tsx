@@ -2,6 +2,7 @@
  * ProblemSection
  * 문제 제기 섹션 - 사장님들의 고민 공감대 형성
  */
+import { motion } from "framer-motion";
 
 const problems = [
   {
@@ -24,22 +25,61 @@ const problems = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 export function ProblemSection() {
   return (
-    <section className="py-20 bg-kkookk-navy-50">
+    <motion.section
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className="py-16 bg-kkookk-navy-50 "
+    >
       <div className="px-6 mx-auto max-w-7xl">
-        <h2 className="mb-20 text-3xl font-semibold text-center md:text-5xl text-kkookk-navy">
-          이런 고민 너무 익숙하시죠?
+        <h2 className="mb-20 text-4xl font-bold text-center sm:text-5xl text-kkookk-navy">
+          혹시 이런 고민, 하고 계신가요?
         </h2>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 ">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          className="grid grid-cols-1 gap-12 md:grid-cols-3"
+        >
           {problems.map((problem, index) => (
-            <div
+            <motion.div
               key={index}
-              className="p-8 transition-transform bg-kkookk-orange-50/50 rounded-2xl shadow-kkookk-md hover:scale-105"
+              variants={itemVariants}
+              className="p-8 transition-transform bg-white border border-gray-100 shadow-lg rounded-2xl hover:scale-105"
             >
-              <div className="flex items-center justify-center mb-6 rounded-full bg-kkookk-orange-100">
-                <img src={problem.icon} width={200} alt={problem.title} />
+              <div className="flex items-center justify-center mb-6 rounded-full">
+                <img
+                  src={problem.icon}
+                  width={200}
+                  height={200}
+                  alt={problem.title}
+                />
               </div>
               <h3 className="mb-3 text-xl font-semibold text-center text-kkookk-navy break-keep">
                 {problem.title}
@@ -47,10 +87,10 @@ export function ProblemSection() {
               <p className="leading-relaxed text-center text-kkookk-steel break-keep">
                 {problem.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

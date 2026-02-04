@@ -70,7 +70,7 @@ export function GuaranteeSection() {
   };
 
   return (
-    <section className="relative py-20 overflow-hidden bg-white">
+    <section className="relative py-16 overflow-hidden bg-white">
       {/* Noise texture overlay for depth */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"

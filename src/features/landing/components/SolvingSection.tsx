@@ -27,8 +27,8 @@ const steps = [
 ];
 
 const COLOR_OPTIONS = [
+  { name: "indigo", color: "bg-kkookk-indigo" },
   { name: "orange", color: "bg-kkookk-orange-500" },
-  { name: "blue", color: "bg-blue-600" },
   { name: "emerald", color: "bg-emerald-600" },
 ];
 
@@ -39,7 +39,7 @@ export function SolvingSection() {
     cardName: "",
     maxStamps: 10,
     reward: "",
-    color: "orange",
+    color: "indigo", // 기본값을 indigo로 변경
     hasBackgroundImage: false,
     stampIcon: "default",
   });
@@ -76,7 +76,7 @@ export function SolvingSection() {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Color selection animation
-    const colors = ["orange", "blue", "emerald", "orange"];
+    const colors = ["indigo", "orange", "emerald", "indigo"];
     for (const color of colors) {
       setDesign((prev) => ({ ...prev, color }));
       await new Promise((resolve) => setTimeout(resolve, 800));
@@ -121,7 +121,7 @@ export function SolvingSection() {
       cardName: "",
       maxStamps: 10,
       reward: "",
-      color: "orange",
+      color: "indigo",
       hasBackgroundImage: false,
       stampIcon: "default",
     });
@@ -143,11 +143,11 @@ export function SolvingSection() {
 
   const getColorClass = (colorName: string) => {
     const colorOption = COLOR_OPTIONS.find((c) => c.name === colorName);
-    return colorOption?.color || "bg-kkookk-orange-500";
+    return colorOption?.color || "bg-kkookk-indigo";
   };
 
   return (
-    <section className="relative py-20 overflow-hidden bg-white">
+    <section className="relative py-16 overflow-hidden bg-white sm:py-32">
       <div className="px-6 mx-auto max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left: Text Content */}
@@ -162,7 +162,7 @@ export function SolvingSection() {
               <h2 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl text-kkookk-navy break-keep">
                 매출이 오르는 스탬프,
                 <br />
-                <span className="text-kkookk-orange-500">이렇게 만듭니다</span>
+                <span className="text-kkookk-indigo">이렇게 만듭니다</span>
               </h2>
               <p className="text-xl text-kkookk-steel break-keep">
                 복잡한 설정 없이, 3분이면 충분합니다
@@ -180,15 +180,15 @@ export function SolvingSection() {
                   transition={{ delay: index * 0.1 }}
                   className={`flex items-start gap-4 p-4 transition-all rounded-2xl ${
                     currentStep === index
-                      ? "bg-kkookk-orange-50 border-2 border-kkookk-orange-500"
+                      ? "bg-kkookk-indigo-50 border-2 border-kkookk-indigo"
                       : "bg-white/50 border-2 border-transparent"
                   }`}
                 >
                   <div
                     className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${
                       currentStep === index
-                        ? "bg-kkookk-orange-500 text-white"
-                        : "bg-kkookk-steel-100 text-kkookk-steel"
+                        ? "bg-kkookk-indigo text-white"
+                        : "bg-gray-200 text-kkookk-steel"
                     }`}
                   >
                     {step.step}
@@ -228,7 +228,7 @@ export function SolvingSection() {
                   >
                     {/* Step Header */}
                     <div className="mb-4">
-                      <div className="inline-block px-3 py-1 mb-2 text-xs font-semibold rounded-full bg-kkookk-orange-100 text-kkookk-orange-600">
+                      <div className="inline-block px-3 py-1 mb-2 text-xs font-semibold rounded-full bg-kkookk-indigo-100 text-kkookk-indigo">
                         {steps[currentStep].step}/3 단계
                       </div>
                       <h3 className="mb-2 text-lg font-bold text-kkookk-navy break-keep">
@@ -254,7 +254,7 @@ export function SolvingSection() {
                               />
                               {isAnimating && design.storeName && (
                                 <motion.div
-                                  className="absolute w-0.5 h-4 bg-kkookk-orange-500 right-3 top-1/2 -translate-y-1/2"
+                                  className="absolute w-0.5 h-4 bg-kkookk-indigo right-3 top-1/2 -translate-y-1/2"
                                   animate={{ opacity: [1, 0] }}
                                   transition={{
                                     duration: 0.5,
@@ -318,7 +318,7 @@ export function SolvingSection() {
                               </div>
                               <motion.span
                                 key={design.maxStamps}
-                                initial={{ scale: 1.5, color: "#ff4d00" }}
+                                initial={{ scale: 1.5, color: "#2e58ff" }}
                                 animate={{ scale: 1, color: "#1a1c1e" }}
                                 className="w-12 text-2xl font-bold text-center text-kkookk-navy"
                               >
@@ -414,9 +414,9 @@ export function SolvingSection() {
                         <motion.div
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="p-3 mt-3 rounded-lg bg-kkookk-orange-500/10"
+                          className="p-3 mt-3 rounded-lg bg-kkookk-indigo-100"
                         >
-                          <p className="text-sm font-semibold text-center text-kkookk-orange-600 break-keep">
+                          <p className="text-sm font-semibold text-center text-kkookk-indigo break-keep">
                             🎁 {design.reward}
                           </p>
                         </motion.div>
@@ -431,7 +431,7 @@ export function SolvingSection() {
       </div>
 
       {/* Decorative Elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 bg-kkookk-orange-500 blur-3xl -z-10" />
+      <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 bg-kkookk-indigo blur-3xl -z-10" />
       <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-10 bg-kkookk-indigo blur-3xl -z-10" />
     </section>
   );

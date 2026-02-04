@@ -26,7 +26,7 @@ const faqs = [
   {
     question: "스탬프 디자인은 직접 만들 수 있나요?",
     answer:
-      "물론입니다! 사장님께서 직접 스탬프의 색상, 로고, 배경 이미지를 커스터마이징하여 가게의 브랜드 아이덴티티를 담은 특별한 스탬프 카드를 만들 수 있습니다. 3분이면 충분합니다.",
+      "もちろん! 사장님께서 직접 스탬프의 색상, 로고, 배경 이미지를 커스터마이징하여 가게의 브랜드 아이덴티티를 담은 특별한 스탬프 카드를 만들 수 있습니다. 3분이면 충분합니다.",
   },
   {
     question: "기존에 쓰던 종이 쿠폰 고객들은 어떻게 옮기나요?",
@@ -34,6 +34,27 @@ const faqs = [
       "사장님 백오피스에서 기존 종이 쿠폰을 사용하던 단골 고객을 위한 스탬프 수동 지급 기능을 제공합니다. 고객이 종이 쿠폰을 가져오면, 사장님께서 직접 확인 후 해당 개수만큼 디지털 스탬프를 바로 적립해줄 수 있습니다.",
   },
 ];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { x: -20, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 export function FAQSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -43,7 +64,13 @@ export function FAQSection() {
   };
 
   return (
-    <section className="py-20 bg-kkookk-navy-50">
+    <motion.section
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+      className="pb-16 bg-kkookk-navy-50"
+    >
       <div className="max-w-4xl px-6 mx-auto">
         <h2 className="mb-4 text-4xl font-bold text-center md:text-5xl text-kkookk-navy">
           FAQ
@@ -52,10 +79,17 @@ export function FAQSection() {
           자주 묻는 질문에 답해드립니다
         </p>
 
-        <div className="space-y-4">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="space-y-4"
+        >
           {faqs.map((faq, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
               className="overflow-hidden bg-white border border-gray-200/50 rounded-2xl shadow-kkookk-sm"
             >
               <button
@@ -88,10 +122,10 @@ export function FAQSection() {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

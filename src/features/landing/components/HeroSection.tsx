@@ -3,17 +3,17 @@
  * 히어로 섹션 - 핵심 메시지 + CTA + 교차 캐러셀
  */
 
-import { Coffee } from "lucide-react";
+import { Coffee, Stamp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export function HeroSection() {
   return (
-    <section className="relative py-20 overflow-hidden ">
+    <section className="relative pt-20 pb-10 overflow-hidden">
       {/* Headline + CTA - 중앙 배치 */}
       <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
         <AnimatedHeadline />
-        <button className="px-6 py-4 text-base font-semibold text-white transition-all rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-md hover:shadow-kkookk-lg">
-          스탬프 생성하러 가기
+        <button className="px-8 py-4 text-lg font-bold text-white transition-all shadow-lg rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-orange-500/30 hover:shadow-kkookk-orange-500/40">
+          무료 스탬프 만들기
         </button>
       </div>
 
@@ -29,10 +29,11 @@ export function HeroSection() {
  */
 function AnimatedHeadline() {
   return (
-    <h1 className="mb-6 text-4xl font-semibold leading-tight lg:text-5xl text-kkookk-navy">
+    <h1 className="mb-8 text-4xl font-semibold leading-tight tracking-tight lg:text-5xl text-kkookk-navy">
       매출로 이어지는 맞춤형 스탬프,
       <br />
-      <span className="text-kkookk-orange-500">꾸욱</span> 찍어보세요!
+      <span className="font-bold text-kkookk-orange-500">꾸욱</span>으로
+      시작하세요!
     </h1>
   );
 }
@@ -195,7 +196,7 @@ function CarouselLayer({ cards, direction }: CarouselLayerProps) {
       onKeyDown={handleKeyDown}
     >
       <div
-        className="flex gap-4 py-4"
+        className="flex gap-2 py-4"
         style={{
           transform: `translateX(${-offset}px)`,
           transition: isDragging ? "none" : "transform 0.1s linear",
@@ -235,20 +236,24 @@ function BeforeAfterCard({
 }: BeforeAfterCardProps) {
   return (
     <div
-      className="relative flex p-4 transition-all duration-300 bg-white rounded-2xl shadow-kkookk-md hover:shadow-kkookk-lg hover:scale-105"
-      style={{ width: "380px", height: "360px" }}
+      className="relative flex p-4 transition-all duration-300 bg-white group rounded-2xl shadow-kkookk-md hover:shadow-kkookk-lg"
+      style={{ width: "400px", height: "360px" }}
     >
       {/* Before - 왼쪽 상단 */}
-      <div className="absolute w-72 top-4 left-4">
-        <div className="p-4 w-full aspect-[1.58/1] bg-kkookk-sand rounded-xl shadow-md relative overflow-hidden border-2 border-dashed border-kkookk-steel/30 ">
-          <span className="text-sm font-medium text-kkookk-steel/60">
-            (실물 스탬프 사진)
-          </span>
+      <div className="absolute transition-all duration-300 w-72 top-4 left-4 group-hover:opacity-50">
+        <div className="p-4 w-full aspect-[1.58/1] bg-kkookk-sand rounded-xl shadow-md relative overflow-hidden border-2 border-dashed border-kkookk-steel/30 flex flex-col items-center justify-center">
+          <Stamp className="w-12 h-12 mb-2 text-kkookk-steel/20" />
+          <div className="text-center">
+            <p className="font-semibold text-kkookk-steel/80">
+              구겨지고, 잃어버리는
+            </p>
+            <p className="text-sm text-kkookk-steel/60">종이 스탬프 쿠폰</p>
+          </div>
         </div>
       </div>
 
       {/* After - 오른쪽 하단 (Before와 겹침) */}
-      <div className="absolute right-2 bottom-14 w-80">
+      <div className="absolute transition-all duration-300 right-2 bottom-14 w-80 group-hover:scale-110 group-hover:-translate-y-2 group-hover:translate-x-1">
         <div
           className="w-full aspect-[1.58/1] rounded-xl p-3.5 text-white shadow-xl relative overflow-hidden bg-cover bg-center"
           style={{ backgroundImage: `url(${backgroundImage})` }}

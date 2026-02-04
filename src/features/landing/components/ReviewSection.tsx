@@ -3,6 +3,7 @@
  * 후기 섹션 - 사회적 증거
  */
 
+import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
 interface Review {
@@ -64,9 +65,36 @@ const reviews: Review[] = [
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 export function ReviewSection() {
   return (
-    <section className="py-20 bg-kkookk-navy-50">
+    <motion.section
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6 }}
+      className="py-16 bg-kkookk-navy-50 sm:py-32"
+    >
       <div className="px-6 mx-auto max-w-7xl">
         <h2 className="mb-12 text-3xl font-semibold text-center leading-12 md:text-4xl text-kkookk-navy break-keep">
           꾸욱과 함께 만든 스탬프,
@@ -74,10 +102,17 @@ export function ReviewSection() {
           말합니다
         </h2>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+        >
           {reviews.map((review, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
               className="flex flex-col gap-4 p-6 transition-all duration-300 bg-white border shadow-lg border-gray-50 rounded-2xl hover:shadow-xl hover:-translate-y-1"
             >
               {/* Profile Section */}
@@ -85,7 +120,7 @@ export function ReviewSection() {
                 <img
                   src={review.image}
                   alt={review.name}
-                  className="object-cover w-12 h-12 rounded-full bg-kkookk-orange-100"
+                  className="object-cover w-12 h-12 rounded-full bg-kkookk-indigo-100"
                 />
                 <div className="flex-1">
                   <h4 className="font-semibold text-kkookk-navy">
@@ -109,10 +144,10 @@ export function ReviewSection() {
                   />
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
