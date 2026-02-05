@@ -64,7 +64,7 @@ export function StampCardCreateForm({
 
   const getColorClass = (color: string, type: 'bg' | 'shadow' = 'bg') => {
     if (color === 'orange') {
-      return type === 'bg' ? 'bg-kkookk-orange-500' : 'shadow-orange-200';
+      return type === 'bg' ? 'bg-kkookk-indigo' : 'shadow-blue-200';
     }
     const colorMap: Record<string, string> = {
       blue: type === 'bg' ? 'bg-blue-600' : 'shadow-blue-200',
@@ -97,9 +97,9 @@ export function StampCardCreateForm({
                 <button
                   type="button"
                   onClick={() => setDesign({ ...design, template: 'basic' })}
-                  className={`p-4 border rounded-xl cursor-pointer hover:border-kkookk-orange-500 transition-colors text-left ${
+                  className={`p-4 border rounded-xl cursor-pointer hover:border-kkookk-indigo transition-colors text-left ${
                     design.template === 'basic'
-                      ? 'border-kkookk-orange-500 ring-2 ring-orange-100'
+                      ? 'border-kkookk-indigo ring-2 ring-blue-100'
                       : 'border-slate-200'
                   }`}
                 >
@@ -122,9 +122,9 @@ export function StampCardCreateForm({
                 <button
                   type="button"
                   onClick={() => setDesign({ ...design, template: 'custom' })}
-                  className={`p-4 border rounded-xl cursor-pointer hover:border-kkookk-orange-500 transition-colors text-left ${
+                  className={`p-4 border rounded-xl cursor-pointer hover:border-kkookk-indigo transition-colors text-left ${
                     design.template === 'custom'
-                      ? 'border-kkookk-orange-500 ring-2 ring-orange-100'
+                      ? 'border-kkookk-indigo ring-2 ring-blue-100'
                       : 'border-slate-200'
                   }`}
                 >
@@ -155,7 +155,7 @@ export function StampCardCreateForm({
                   onChange={(e) =>
                     setDesign({ ...design, cardName: e.target.value })
                   }
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:border-kkookk-orange-500 focus:outline-none"
+                  className="w-full p-3 border border-slate-200 rounded-lg focus:border-kkookk-indigo focus:outline-none"
                 />
               </div>
 
@@ -247,7 +247,7 @@ export function StampCardCreateForm({
                         onChange={(e) => handleFileUpload(e, 'backgroundImage')}
                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                       />
-                      <div className="text-kkookk-steel flex flex-col items-center group-hover:text-kkookk-orange-500 transition-colors">
+                      <div className="text-kkookk-steel flex flex-col items-center group-hover:text-kkookk-indigo transition-colors">
                         <Upload size={24} className="mb-2" />
                         <span className="text-xs">
                           {design.backgroundImage
@@ -282,7 +282,7 @@ export function StampCardCreateForm({
                       스탬프 아이콘 (완료 시)
                     </span>
                     <div className="flex gap-4 items-center">
-                      <div className="w-16 h-16 border-2 border-dashed border-slate-300 rounded-full flex items-center justify-center relative cursor-pointer hover:border-kkookk-orange-500 overflow-hidden">
+                      <div className="w-16 h-16 border-2 border-dashed border-slate-300 rounded-full flex items-center justify-center relative cursor-pointer hover:border-kkookk-indigo overflow-hidden">
                         <input
                           type="file"
                           accept="image/*"
@@ -360,7 +360,7 @@ export function StampCardCreateForm({
                   onChange={(e) =>
                     setDesign({ ...design, reward: e.target.value })
                   }
-                  className="w-full p-3 border border-slate-200 rounded-lg focus:border-kkookk-orange-500 focus:outline-none"
+                  className="w-full p-3 border border-slate-200 rounded-lg focus:border-kkookk-indigo focus:outline-none"
                 />
               </div>
             </div>
@@ -526,7 +526,7 @@ export function StampCardCreateForm({
           <button
             type="button"
             onClick={handleSubmit}
-            className="px-6 py-3 bg-kkookk-orange-500 text-white rounded-lg font-bold hover:bg-orange-600"
+            className="px-6 py-3 bg-kkookk-indigo text-white rounded-lg font-bold hover:bg-blue-700"
           >
             게시하기
           </button>

@@ -3,25 +3,26 @@
  * 사장님 백오피스 라우트용 레이아웃 래퍼
  */
 
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 export function OwnerLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
-    <div className="min-h-screen bg-kkookk-sand flex flex-col">
+    <div className="flex flex-col min-h-screen bg-kkookk-sand">
       {/* 헤더 */}
-      <header className="h-16 bg-white border-b border-slate-200 flex justify-between items-center px-6 sticky top-0 z-50">
-        <div className="flex items-center gap-2 font-bold text-lg text-kkookk-navy">
-          <div className="w-8 h-8 bg-kkookk-navy rounded-lg flex items-center justify-center text-white">
-            B
-          </div>
-          Boss Partners
-        </div>
+      <header className="sticky top-0 z-50 flex items-center justify-between h-16 px-6 bg-white border-b border-slate-200">
+        <Link to={"/owner/stores"} className="flex items-center">
+          <img
+            src="/logo/logo_text_owner.png"
+            alt="kkookk owner logo"
+            className="object-contain w-auto mt-2 h-30"
+          />
+        </Link>
         <button
           onClick={handleLogout}
           className="text-sm text-kkookk-steel hover:text-kkookk-navy"
@@ -32,11 +33,11 @@ export function OwnerLayout() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* 사이드바 */}
-        <aside className="w-64 bg-white border-r border-slate-200 p-4 hidden md:block">
+        <aside className="hidden w-64 p-4 bg-white border-r border-slate-200 md:block">
           <div className="space-y-1">
             <button
-              onClick={() => navigate('/owner/stores')}
-              className="w-full text-left px-4 py-3 rounded-lg cursor-pointer bg-kkookk-orange-50 text-kkookk-orange-500 font-bold"
+              onClick={() => navigate("/owner/stores")}
+              className="w-full px-4 py-3 font-bold text-left rounded-lg cursor-pointer bg-blue-50 text-kkookk-indigo"
             >
               스토어 관리
             </button>
@@ -44,7 +45,7 @@ export function OwnerLayout() {
         </aside>
 
         {/* 메인 컨텐츠 */}
-        <main className="flex-1 flex flex-col min-w-0 bg-kkookk-sand overflow-y-auto">
+        <main className="flex flex-col flex-1 min-w-0 overflow-y-auto bg-kkookk-sand">
           <Outlet />
         </main>
       </div>

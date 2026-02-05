@@ -151,7 +151,7 @@ export function StoreHistoryPage({ requests = MOCK_REQUESTS }: StoreHistoryPageP
                       <span
                         className={`text-xs font-bold px-2 py-1 rounded ${
                           req.type === 'stamp'
-                            ? 'bg-kkookk-orange-50 text-kkookk-orange-500'
+                            ? 'bg-blue-50 text-kkookk-indigo'
                             : 'bg-purple-100 text-purple-700'
                         }`}
                       >

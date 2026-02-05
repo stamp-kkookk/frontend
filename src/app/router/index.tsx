@@ -8,7 +8,7 @@ import { OwnerLayout } from "@/app/layouts/OwnerLayout";
 import { TerminalLayout } from "@/app/layouts/TerminalLayout";
 import { LandingPage } from "@/pages/LandingPage";
 import { LauncherPage } from "@/pages/LauncherPage";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // 고객 페이지
 import { CustomerHistoryPage } from "@/pages/customer/CustomerHistoryPage";
@@ -75,6 +75,7 @@ export const router = createBrowserRouter([
     path: "/owner",
     element: <OwnerLayout />,
     children: [
+      { index: true, element: <Navigate to="stores" replace /> },
       { path: "login", element: <OwnerLoginPage /> },
       { path: "stores", element: <StoreListPage /> },
       { path: "stores/new", element: <StoreCreatePage /> },

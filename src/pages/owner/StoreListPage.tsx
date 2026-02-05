@@ -122,7 +122,7 @@ export function StoreListPage({ stores = MOCK_STORES }: StoreListPageProps) {
                   >
                     <QrCode size={16} /> QR 포스터
                   </button>
-                  <button className="flex items-center gap-2 px-4 py-2 font-bold rounded-lg bg-kkookk-orange-50 text-kkookk-orange-500 hover:bg-orange-100">
+                  <button className="flex items-center gap-2 px-4 py-2 font-bold rounded-lg bg-blue-50 text-kkookk-indigo hover:bg-blue-100">
                     관리 <ArrowRight size={16} />
                   </button>
                 </div>

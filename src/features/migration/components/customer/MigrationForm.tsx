@@ -51,6 +51,9 @@ export function MigrationForm({
 
   const allStoresUsed = availableStores.every((s) => s.isDisabled);
 
+  // 폼 유효성 검사
+  const isFormValid = selectedStoreName.trim() !== '' && count.trim() !== '' && file !== null;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -110,7 +113,7 @@ export function MigrationForm({
               htmlFor="store-select"
               className="block text-sm font-bold text-kkookk-navy mb-2"
             >
-              매장 선택
+              매장 선택 <span className="text-kkookk-orange-500">*</span>
             </label>
             <div className="relative">
               <select
@@ -146,14 +149,19 @@ export function MigrationForm({
           </div>
 
           {/* 스탬프 개수 */}
-          <Input
-            type="number"
-            label="보유 스탬프 개수"
-            value={count}
-            onChange={(e) => setCount(e.target.value)}
-            placeholder="0"
-            min={1}
-          />
+          <div>
+            <label htmlFor="count-input" className="block text-xs font-bold text-kkookk-navy mb-2">
+              보유 스탬프 개수 <span className="text-kkookk-orange-500">*</span>
+            </label>
+            <Input
+              id="count-input"
+              type="number"
+              value={count}
+              onChange={(e) => setCount(e.target.value)}
+              placeholder="0"
+              min={1}
+            />
+          </div>
 
           {/* 사진 업로드 */}
           <div>
@@ -161,7 +169,7 @@ export function MigrationForm({
               htmlFor="photo-upload"
               className="block text-sm font-bold text-kkookk-navy mb-2"
             >
-              종이 쿠폰 사진 첨부
+              종이 쿠폰 사진 첨부 <span className="text-kkookk-orange-500">*</span>
             </label>
             <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center bg-kkookk-sand/30 hover:bg-kkookk-sand cursor-pointer transition-colors relative">
               <input
@@ -195,8 +203,8 @@ export function MigrationForm({
       <div className="p-6 border-t border-slate-100">
         <Button
           onClick={handleSubmit}
-          disabled={allStoresUsed}
-          variant="navy"
+          disabled={allStoresUsed || !isFormValid}
+          variant="primary"
           size="full"
           className="shadow-lg"
         >

@@ -153,7 +153,7 @@ export function StoreDetailPage() {
               </h4>
               <div className="bg-white rounded-2xl border border-slate-200 p-6 flex gap-8 items-center shadow-sm hover:shadow-md transition-shadow">
                 {/* 카드 미리보기 */}
-                <div className="w-80 h-48 bg-gradient-to-br from-kkookk-orange-500 to-[#E04F00] rounded-xl shadow-lg relative flex flex-col p-6 text-white overflow-hidden shrink-0">
+                <div className="w-80 h-48 bg-gradient-to-br from-kkookk-indigo to-blue-700 rounded-xl shadow-lg relative flex flex-col p-6 text-white overflow-hidden shrink-0">
                   <div className="flex justify-between items-start mb-4">
                     <span className="font-bold text-lg opacity-90">
                       {store.name}

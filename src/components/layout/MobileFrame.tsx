@@ -39,7 +39,7 @@ export function MobileFrame({
     <div className="min-h-screen w-full bg-kkookk-sand flex justify-center">
       <div
         className={cn(
-          'w-full max-w-md min-h-screen bg-white flex flex-col relative',
+          'w-full max-w-md min-h-screen bg-white flex flex-col relative overflow-hidden',
           className
         )}
       >
@@ -49,30 +49,43 @@ export function MobileFrame({
         </main>
 
         {/* 슬라이드 아웃 메뉴 */}
-        {isMenuOpen && (
-          <div className="fixed inset-0 z-50 flex justify-end">
-            {/* 배경 오버레이 */}
-            <div
-              role="button"
-              tabIndex={0}
-              aria-label="메뉴 닫기"
-              className="absolute inset-0 bg-kkookk-navy/20 backdrop-blur-sm animate-in fade-in"
-              onClick={onMenuClose}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onMenuClose?.();
-                }
-              }}
-            />
-            {/* 메뉴 패널 */}
-            <div className="relative w-[300px] max-w-[80vw] h-full bg-white shadow-2xl animate-in slide-in-from-right duration-300 flex flex-col">
+        <div
+          className={cn(
+            "absolute inset-0 z-50 flex justify-end pointer-events-none",
+            isMenuOpen && "pointer-events-auto"
+          )}
+        >
+          {/* 배경 오버레이 */}
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label="메뉴 닫기"
+            className={cn(
+              "absolute inset-0 bg-kkookk-navy/20 backdrop-blur-sm transition-opacity duration-200",
+              isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+            onClick={onMenuClose}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onMenuClose?.();
+              }
+            }}
+          />
+          {/* 메뉴 패널 */}
+          <div
+            className={cn(
+              "relative w-[300px] max-w-[80vw] h-full bg-white shadow-2xl flex flex-col",
+              "transition-transform duration-300 ease-out",
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
+            )}
+          >
               {/* 메뉴 헤더 */}
               <div className="p-6 pt-12 flex justify-between items-center border-b border-slate-100">
                 <span className="font-bold text-lg text-kkookk-navy">전체 메뉴</span>
                 <button
                   onClick={onMenuClose}
-                  className="p-2 -mr-2 text-kkookk-steel hover:text-kkookk-navy hover:bg-slate-50 rounded-full"
+                  className="p-2 -mr-2 text-kkookk-steel hover:text-kkookk-navy hover:bg-slate-50 rounded-full transition-colors"
                   aria-label="메뉴 닫기"
                 >
                   <X size={24} />
@@ -122,7 +135,6 @@ export function MobileFrame({
               </div>
             </div>
           </div>
-        )}
       </div>
     </div>
   );

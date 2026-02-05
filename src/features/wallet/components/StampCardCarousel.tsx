@@ -3,10 +3,10 @@
  * 스탬프 카드용 가로 스크롤 캐러셀
  */
 
-import { useState, useRef, useCallback } from 'react';
-import { cn } from '@/lib/utils';
-import { StampCardItem } from './StampCardItem';
-import type { StampCard } from '@/types/domain';
+import { cn } from "@/lib/utils";
+import type { StampCard } from "@/types/domain";
+import { useCallback, useRef, useState } from "react";
+import { StampCardItem } from "./StampCardItem";
 
 interface StampCardCarouselProps {
   cards: StampCard[];
@@ -31,11 +31,11 @@ export function StampCardCarousel({
       const index = Math.round(scrollLeft / cardWidth);
       setCurrentIndex(Math.min(Math.max(index, 0), cards.length - 1));
     },
-    [cards.length]
+    [cards.length],
   );
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div className={cn("flex flex-col", className)}>
       {/* 캐러셀 */}
       <div
         ref={scrollRef}
@@ -47,7 +47,7 @@ export function StampCardCarousel({
             key={card.id}
             className="snap-center shrink-0 w-[85%] transition-all duration-300"
             style={{
-              transform: currentIndex === index ? 'scale(1)' : 'scale(0.95)',
+              transform: currentIndex === index ? "scale(1)" : "scale(0.95)",
               opacity: currentIndex === index ? 1 : 0.7,
             }}
           >
@@ -66,10 +66,10 @@ export function StampCardCarousel({
           <div
             key={i}
             className={cn(
-              'h-1.5 rounded-full transition-all duration-300',
+              "h-1.5 rounded-full transition-all duration-300",
               i === currentIndex
-                ? 'bg-kkookk-navy w-4'
-                : 'bg-slate-300 w-1.5'
+                ? "bg-kkookk-orange-500 w-4"
+                : "bg-slate-300 w-1.5",
             )}
           />
         ))}

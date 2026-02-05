@@ -25,7 +25,7 @@ export function ApprovalQueue({
       <div className="p-6 pb-2 flex justify-between items-end">
         <h2 className="text-2xl font-bold text-kkookk-navy">
           승인 요청{' '}
-          <span className="text-kkookk-orange-500">{pendingRequests.length}</span>
+          <span className="text-kkookk-indigo">{pendingRequests.length}</span>
           건
         </h2>
         <span className="text-sm text-kkookk-steel flex items-center gap-2">

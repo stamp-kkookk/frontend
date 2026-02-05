@@ -39,7 +39,7 @@ export function PendingRequestsList({
           <div className="flex justify-between items-start mb-6">
             <div>
               <Badge
-                variant={req.type === 'stamp' ? 'primary' : 'secondary'}
+                variant="secondary"
                 className="mb-2"
               >
                 {req.type === 'stamp' ? '스탬프 적립' : '리워드 사용'}
@@ -55,7 +55,7 @@ export function PendingRequestsList({
               <p className="text-sm text-kkookk-steel">
                 {formatTime(req.time)} 요청
               </p>
-              <p className="font-bold text-lg text-kkookk-orange-500 mt-1">
+              <p className="font-bold text-lg text-kkookk-indigo mt-1">
                 {req.type === 'stamp' ? `+${req.count}개` : '사용'}
               </p>
             </div>
@@ -71,8 +71,8 @@ export function PendingRequestsList({
             </Button>
             <Button
               onClick={() => onApprove(req.id)}
-              variant="primary"
-              className="flex-[2] shadow-lg shadow-orange-200"
+              variant="secondary"
+              className="flex-[2] shadow-lg shadow-blue-200"
             >
               승인하기
             </Button>

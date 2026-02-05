@@ -80,7 +80,7 @@ export function StoreCreatePage() {
               value={formData.name}
               onChange={handleChange}
               placeholder="예: 카페 루나 강남점"
-              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-orange-500 focus:outline-none"
+              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-indigo focus:outline-none"
             />
           </div>
 
@@ -99,7 +99,7 @@ export function StoreCreatePage() {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="주소를 검색해주세요"
-                className="flex-1 p-3 border border-slate-200 rounded-xl focus:border-kkookk-orange-500 focus:outline-none"
+                className="flex-1 p-3 border border-slate-200 rounded-xl focus:border-kkookk-indigo focus:outline-none"
               />
               <button
                 type="button"
@@ -124,7 +124,7 @@ export function StoreCreatePage() {
               value={formData.phone}
               onChange={handleChange}
               placeholder="02-0000-0000"
-              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-orange-500 focus:outline-none"
+              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-indigo focus:outline-none"
             />
           </div>
 
@@ -140,8 +140,8 @@ export function StoreCreatePage() {
                   onClick={() => handleCategorySelect(cat)}
                   className={`px-4 py-2 border rounded-full text-sm transition-colors bg-white ${
                     formData.category === cat
-                      ? 'border-kkookk-orange-500 text-kkookk-orange-500'
-                      : 'border-slate-200 hover:border-kkookk-orange-500 hover:text-kkookk-orange-500'
+                      ? 'border-kkookk-indigo text-kkookk-indigo'
+                      : 'border-slate-200 hover:border-kkookk-indigo hover:text-kkookk-indigo'
                   }`}
                 >
                   {cat}
@@ -163,7 +163,7 @@ export function StoreCreatePage() {
               value={formData.description}
               onChange={handleChange}
               placeholder="매장에 대한 간단한 소개를 입력해주세요."
-              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-orange-500 focus:outline-none h-24 resize-none"
+              className="w-full p-3 border border-slate-200 rounded-xl focus:border-kkookk-indigo focus:outline-none h-24 resize-none"
             />
           </div>
         </div>
