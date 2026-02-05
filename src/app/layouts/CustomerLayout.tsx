@@ -6,9 +6,11 @@
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { MobileFrame } from '@/components/layout/MobileFrame';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 export function CustomerLayout() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuItemClick = (screen: string) => {
@@ -32,6 +34,7 @@ export function CustomerLayout() {
   };
 
   const handleLogout = () => {
+    logout();
     navigate('/');
   };
 

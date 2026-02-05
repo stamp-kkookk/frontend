@@ -13,7 +13,7 @@ import type { MigrationRequest, MigrationStatus } from '@/types/domain';
 interface MigrationManagerProps {
   migrations: MigrationRequest[];
   storeName: string;
-  onAction: (id: string, newStatus: MigrationStatus) => void;
+  onAction: (id: string, newStatus: MigrationStatus, approvedCount?: number, rejectReason?: string) => void;
 }
 
 export function MigrationManager({
@@ -21,7 +21,7 @@ export function MigrationManager({
   storeName,
   onAction,
 }: MigrationManagerProps) {
-  const [viewImage, setViewImage] = useState<string | null>(null);
+  const [viewImage, setViewImage] = useState<MigrationRequest | null>(null);
 
   const storeMigrations = migrations.filter((m) => m.storeName === storeName);
 
@@ -81,7 +81,7 @@ export function MigrationManager({
                 </td>
                 <td className="p-4">
                   <button
-                    onClick={() => setViewImage(mig.id)}
+                    onClick={() => setViewImage(mig)}
                     className="flex items-center gap-1 text-xs font-bold text-kkookk-indigo hover:underline"
                   >
                     <ImageIcon size={14} /> 확인하기
@@ -92,7 +92,12 @@ export function MigrationManager({
                   {mig.status === 'pending' && (
                     <div className="flex justify-end gap-2">
                       <Button
-                        onClick={() => onAction(mig.id, 'rejected')}
+                        onClick={() => {
+                          const reason = prompt('반려 사유를 입력해주세요:');
+                          if (reason) {
+                            onAction(mig.id, 'rejected', undefined, reason);
+                          }
+                        }}
                         variant="subtle"
                         size="sm"
                         className="hover:bg-red-50 hover:text-red-600"
@@ -100,7 +105,13 @@ export function MigrationManager({
                         반려
                       </Button>
                       <Button
-                        onClick={() => onAction(mig.id, 'approved')}
+                        onClick={() => {
+                          const countStr = prompt(`승인할 스탬프 수를 입력해주세요 (신청: ${mig.count}개):`, String(mig.count));
+                          const count = countStr ? parseInt(countStr, 10) : null;
+                          if (count && count > 0) {
+                            onAction(mig.id, 'approved', count);
+                          }
+                        }}
                         variant="navy"
                         size="sm"
                       >
@@ -145,9 +156,20 @@ export function MigrationManager({
             aria-modal="true"
             className="relative bg-white rounded-2xl p-2 max-w-sm w-full animate-in zoom-in-95"
           >
-            <div className="aspect-[3/4] bg-slate-100 rounded-xl flex flex-col items-center justify-center text-slate-400">
-              <ImageIcon size={48} className="mb-2" />
-              <p className="text-sm">이미지 미리보기 (시뮬레이션)</p>
+            {viewImage.imageUrl ? (
+              <img
+                src={viewImage.imageUrl}
+                alt="마이그레이션 증빙 사진"
+                className="aspect-[3/4] w-full object-contain rounded-xl bg-slate-100"
+              />
+            ) : (
+              <div className="aspect-[3/4] bg-slate-100 rounded-xl flex flex-col items-center justify-center text-slate-400">
+                <ImageIcon size={48} className="mb-2" />
+                <p className="text-sm">이미지 없음</p>
+              </div>
+            )}
+            <div className="mt-2 px-2 text-center">
+              <p className="text-sm text-kkookk-navy font-bold">신청 스탬프: {viewImage.count}개</p>
             </div>
             <button
               type="button"

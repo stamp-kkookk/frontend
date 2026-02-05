@@ -3,12 +3,14 @@
  * 매장용 QR 포스터 표시 및 다운로드 모달
  */
 
-import { QrCode, Smartphone, Check, Download, X } from 'lucide-react';
+import { QrCode, Smartphone, Check, Download, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 interface QRPosterModalProps {
   isOpen: boolean;
   storeName: string;
+  qrCodeBase64?: string;
+  isLoading?: boolean;
   onClose: () => void;
   onDownload: () => void;
 }
@@ -16,6 +18,8 @@ interface QRPosterModalProps {
 export function QRPosterModal({
   isOpen,
   storeName,
+  qrCodeBase64,
+  isLoading,
   onClose,
   onDownload,
 }: QRPosterModalProps) {
@@ -64,8 +68,18 @@ export function QRPosterModal({
               스탬프 적립 & 리워드 사용
             </p>
 
-            <div className="bg-kkookk-navy p-4 rounded-xl mb-6">
-              <QrCode size={120} className="text-white" />
+            <div className="bg-kkookk-navy p-4 rounded-xl mb-6 min-w-[152px] min-h-[152px] flex items-center justify-center">
+              {isLoading ? (
+                <Loader2 size={48} className="text-white animate-spin" />
+              ) : qrCodeBase64 ? (
+                <img
+                  src={`data:image/png;base64,${qrCodeBase64}`}
+                  alt={`${storeName} QR 코드`}
+                  className="w-[120px] h-[120px]"
+                />
+              ) : (
+                <QrCode size={120} className="text-white" />
+              )}
             </div>
 
             <div className="flex items-center gap-2 text-kkookk-navy font-bold text-sm bg-slate-100 px-4 py-2 rounded-full">

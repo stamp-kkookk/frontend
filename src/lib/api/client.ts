@@ -4,13 +4,17 @@
  */
 
 import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
+import { getAuthToken, getStepUpToken, clearAuthToken } from './tokenManager';
 
 // =============================================================================
 // API Configuration
 // =============================================================================
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 const API_TIMEOUT = 30000; // 30 seconds
+
+// Custom header for StepUp token
+const STEPUP_HEADER = 'X-StepUp-Token';
 
 // =============================================================================
 // Create Axios Instance
@@ -30,11 +34,17 @@ export const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // Get auth token from localStorage
-    const token = localStorage.getItem('auth_token');
+    // Get auth token from tokenManager
+    const token = getAuthToken();
 
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    // Add StepUp token if available and required
+    const stepUpToken = getStepUpToken();
+    if (stepUpToken && config.headers) {
+      config.headers[STEPUP_HEADER] = stepUpToken;
     }
 
     return config;
@@ -57,8 +67,8 @@ apiClient.interceptors.response.use(
 
       switch (status) {
         case 401:
-          // Unauthorized - clear token and redirect to login
-          localStorage.removeItem('auth_token');
+          // Unauthorized - clear token
+          clearAuthToken();
           // Could dispatch an event or navigate to login
           break;
         case 403:
@@ -124,7 +134,7 @@ export interface PaginatedResponse<T> {
 // =============================================================================
 
 /**
- * Generic GET request
+ * Generic GET request (assumes response is wrapped in ApiResponse)
  */
 export async function get<T>(url: string, params?: Record<string, unknown>): Promise<T> {
   const response = await apiClient.get<ApiResponse<T>>(url, { params });
@@ -132,7 +142,7 @@ export async function get<T>(url: string, params?: Record<string, unknown>): Pro
 }
 
 /**
- * Generic POST request
+ * Generic POST request (assumes response is wrapped in ApiResponse)
  */
 export async function post<T, D = unknown>(url: string, data?: D): Promise<T> {
   const response = await apiClient.post<ApiResponse<T>>(url, data);
@@ -140,7 +150,7 @@ export async function post<T, D = unknown>(url: string, data?: D): Promise<T> {
 }
 
 /**
- * Generic PUT request
+ * Generic PUT request (assumes response is wrapped in ApiResponse)
  */
 export async function put<T, D = unknown>(url: string, data?: D): Promise<T> {
   const response = await apiClient.put<ApiResponse<T>>(url, data);
@@ -148,7 +158,7 @@ export async function put<T, D = unknown>(url: string, data?: D): Promise<T> {
 }
 
 /**
- * Generic PATCH request
+ * Generic PATCH request (assumes response is wrapped in ApiResponse)
  */
 export async function patch<T, D = unknown>(url: string, data?: D): Promise<T> {
   const response = await apiClient.patch<ApiResponse<T>>(url, data);
@@ -156,11 +166,55 @@ export async function patch<T, D = unknown>(url: string, data?: D): Promise<T> {
 }
 
 /**
- * Generic DELETE request
+ * Generic DELETE request (assumes response is wrapped in ApiResponse)
  */
 export async function del<T>(url: string): Promise<T> {
   const response = await apiClient.delete<ApiResponse<T>>(url);
   return response.data.data;
+}
+
+// =============================================================================
+// Raw Response Helpers (for APIs that don't wrap in ApiResponse)
+// =============================================================================
+
+/**
+ * GET request returning raw response data
+ */
+export async function getRaw<T>(url: string, params?: Record<string, unknown>): Promise<T> {
+  const response = await apiClient.get<T>(url, { params });
+  return response.data;
+}
+
+/**
+ * POST request returning raw response data
+ */
+export async function postRaw<T, D = unknown>(url: string, data?: D): Promise<T> {
+  const response = await apiClient.post<T>(url, data);
+  return response.data;
+}
+
+/**
+ * PUT request returning raw response data
+ */
+export async function putRaw<T, D = unknown>(url: string, data?: D): Promise<T> {
+  const response = await apiClient.put<T>(url, data);
+  return response.data;
+}
+
+/**
+ * PATCH request returning raw response data
+ */
+export async function patchRaw<T, D = unknown>(url: string, data?: D): Promise<T> {
+  const response = await apiClient.patch<T>(url, data);
+  return response.data;
+}
+
+/**
+ * DELETE request returning raw response data (or void for 204)
+ */
+export async function delRaw<T = void>(url: string): Promise<T> {
+  const response = await apiClient.delete<T>(url);
+  return response.data;
 }
 
 export default apiClient;
