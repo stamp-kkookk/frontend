@@ -9,7 +9,7 @@ export function OwnerLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/");
+    navigate("/simulation");
   };
 
   return (

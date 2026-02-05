@@ -40,7 +40,7 @@ export function OwnerLoginPage({
     if (onBack) {
       onBack();
     } else {
-      navigate("/");
+      navigate("/simulation");
     }
   };
   const [authMode, setAuthMode] = useState<AuthMode>("login");
@@ -92,7 +92,7 @@ export function OwnerLoginPage({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center ${isTabletMode ? "h-full w-full" : "min-h-screen"} p-6`}
+      className={`flex flex-col items-center justify-center min-h-screen p-6 ${isTabletMode ? "w-full" : ""}`}
     >
       <div
         className={`bg-white rounded-3xl shadow-xl p-8 w-full ${isTabletMode ? "max-w-sm border border-slate-100" : "max-w-md border border-slate-200"}`}

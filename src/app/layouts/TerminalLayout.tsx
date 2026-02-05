@@ -4,11 +4,11 @@
  * 사이드바와 상태 관리를 포함
  */
 
-import { useCallback, useState } from "react";
-import { useNavigate, useParams, Outlet } from "react-router-dom";
 import { TerminalSidebar } from "@/features/terminal/components/TerminalSidebar";
 import { MOCK_REQUESTS } from "@/lib/constants/mockData";
-import type { StoreStatus, IssuanceRequest } from "@/types/domain";
+import type { IssuanceRequest, StoreStatus } from "@/types/domain";
+import { useCallback, useState } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 export function TerminalLayout() {
   const navigate = useNavigate();
@@ -20,21 +20,25 @@ export function TerminalLayout() {
   const pendingCount = requests.filter((r) => r.status === "pending").length;
 
   // TODO: storeId로 매장 정보 조회
-  const storeName = storeId === "store-1" ? "카페 루나" : `매장 ${storeId}`;
+  const storeName = storeId === "demo" ? "카페 루나" : `매장 ${storeId}`;
 
   const handleLogout = useCallback(() => {
-    navigate("/");
+    navigate("/simulation");
   }, [navigate]);
 
   const approve = useCallback((id: string) => {
     setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "approved" as const } : r))
+      prev.map((r) =>
+        r.id === id ? { ...r, status: "approved" as const } : r,
+      ),
     );
   }, []);
 
   const reject = useCallback((id: string) => {
     setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "rejected" as const } : r))
+      prev.map((r) =>
+        r.id === id ? { ...r, status: "rejected" as const } : r,
+      ),
     );
   }, []);
 
@@ -52,7 +56,15 @@ export function TerminalLayout() {
           onLogout={handleLogout}
         />
         <div className="flex flex-col flex-1 bg-kkookk-sand">
-          <Outlet context={{ requests, approve, reject, storeStatus, toggleStoreStatus }} />
+          <Outlet
+            context={{
+              requests,
+              approve,
+              reject,
+              storeStatus,
+              toggleStoreStatus,
+            }}
+          />
         </div>
       </div>
     </div>

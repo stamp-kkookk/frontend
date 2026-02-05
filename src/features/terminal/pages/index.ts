@@ -2,4 +2,4 @@
  * Terminal Pages Index
  */
 
-export * from './TerminalDashboardPage';
+// Terminal pages are located in src/pages/terminal/

@@ -13,7 +13,7 @@ export function TerminalLoginPage() {
     <OwnerLoginPage
       title="매장용 태블릿"
       subtitle=""
-      onLoginSuccess={() => navigate("/terminal/store-1/approval")}
+      onLoginSuccess={() => navigate("/terminal/demo/approval")}
       onBack={() => navigate("/simulation")}
       isTabletMode
     />
