@@ -3,10 +3,10 @@
  * 사장님 계정용 이메일/비밀번호 로그인 폼
  */
 
-import { useState } from 'react';
-import { Mail, Lock, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Loader2, Lock, Mail } from "lucide-react";
+import { useState } from "react";
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
@@ -19,13 +19,13 @@ export function LoginForm({
   onSwitchToSignup,
   isLoading = false,
 }: LoginFormProps) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
+      alert("이메일과 비밀번호를 입력해주세요.");
       return;
     }
     onSubmit(email, password);
@@ -38,12 +38,13 @@ export function LoginForm({
     >
       <Input
         type="email"
-        label="이메일 주소"
+        label="이메일"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="boss@partner.com"
         icon={<Mail size={18} />}
         autoComplete="email"
+        className="focus:border-indigo-600!"
       />
 
       <Input
@@ -54,13 +55,14 @@ export function LoginForm({
         placeholder="••••••••"
         icon={<Lock size={18} />}
         autoComplete="current-password"
+        className="focus:border-indigo-600!"
       />
 
       <Button
         type="submit"
-        variant="navy"
+        variant="secondary"
         size="full"
-        disabled={isLoading}
+        disabled={isLoading || !email || !password}
         className="mt-4"
       >
         {isLoading ? (
@@ -69,17 +71,17 @@ export function LoginForm({
             로그인 중...
           </>
         ) : (
-          '로그인'
+          "로그인"
         )}
       </Button>
 
-      <div className="text-center mt-4">
+      <div className="mt-4 text-center">
         <button
           type="button"
           onClick={onSwitchToSignup}
-          className="text-sm text-kkookk-steel hover:text-kkookk-orange-500 underline decoration-slate-300 underline-offset-4"
+          className="text-sm text-kkookk-steel hover:text-indigo-600 decoration-slate-300 "
         >
-          아직 계정이 없으신가요? 회원가입
+          아직 계정이 없으신가요? <b className="underline">회원가입</b>
         </button>
       </div>
     </form>

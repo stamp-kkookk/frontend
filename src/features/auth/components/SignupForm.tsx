@@ -3,10 +3,10 @@
  * 휴대폰 인증이 포함된 사장님 계정 회원가입 폼
  */
 
-import { useState } from 'react';
-import { User, Smartphone, Mail, Lock, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Loader2, Lock, Mail, Smartphone, User } from "lucide-react";
+import { useState } from "react";
 
 interface SignupFormProps {
   onSubmit: (data: {
@@ -24,15 +24,15 @@ export function SignupForm({
   onSwitchToLogin,
   isLoading = false,
 }: SignupFormProps) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password || !name || !phone) {
-      alert('모든 정보를 입력해주세요.');
+      alert("모든 정보를 입력해주세요.");
       return;
     }
     onSubmit({ name, phone, email, password });
@@ -45,12 +45,13 @@ export function SignupForm({
     >
       <Input
         type="text"
-        label="이름 (실명)"
+        label="이름"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="홍길동"
         icon={<User size={18} />}
         autoComplete="name"
+        className="focus:border-indigo-600!"
       />
 
       <Input
@@ -61,6 +62,7 @@ export function SignupForm({
         placeholder="010-0000-0000"
         icon={<Smartphone size={18} />}
         autoComplete="tel"
+        className="focus:border-indigo-600!"
       />
 
       <Input
@@ -71,6 +73,7 @@ export function SignupForm({
         placeholder="boss@partner.com"
         icon={<Mail size={18} />}
         autoComplete="email"
+        className="focus:border-indigo-600!"
       />
 
       <Input
@@ -81,13 +84,14 @@ export function SignupForm({
         placeholder="8자 이상 입력"
         icon={<Lock size={18} />}
         autoComplete="new-password"
+        className="focus:border-indigo-600!"
       />
 
       <Button
         type="submit"
-        variant="primary"
+        variant="secondary"
         size="full"
-        disabled={isLoading}
+        disabled={isLoading || !name || !phone || !email || !password}
         className="mt-4"
       >
         {isLoading ? (
@@ -96,17 +100,17 @@ export function SignupForm({
             처리 중...
           </>
         ) : (
-          '인증번호 받기'
+          "인증번호 받기"
         )}
       </Button>
 
-      <div className="text-center mt-4">
+      <div className="mt-2 text-center">
         <button
           type="button"
           onClick={onSwitchToLogin}
-          className="text-sm text-kkookk-steel hover:text-kkookk-navy"
+          className="text-sm text-kkookk-steel hover:text-kkookk-indigo"
         >
-          이미 계정이 있으신가요? 로그인
+          이미 계정이 있으신가요? <b className="underline">로그인</b>
         </button>
       </div>
     </form>

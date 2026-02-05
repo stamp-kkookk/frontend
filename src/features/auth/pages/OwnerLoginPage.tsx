@@ -3,13 +3,13 @@
  * 사장님/백오피스 인증을 위한 로그인 페이지
  */
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
-import { LoginForm } from '../components/LoginForm';
-import { SignupForm } from '../components/SignupForm';
-import { PhoneVerification } from '../components/PhoneVerification';
-import type { AuthMode } from '../types';
+import { ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { LoginForm } from "../components/LoginForm";
+import { PhoneVerification } from "../components/PhoneVerification";
+import { SignupForm } from "../components/SignupForm";
+import type { AuthMode } from "../types";
 
 interface OwnerLoginPageProps {
   title?: string;
@@ -20,8 +20,8 @@ interface OwnerLoginPageProps {
 }
 
 export function OwnerLoginPage({
-  title = '사장님 백오피스',
-  subtitle = '통합 관리자 계정으로 로그인하세요.',
+  title = "사장님 백오피스",
+  subtitle = "",
   onLoginSuccess,
   onBack,
   isTabletMode = false,
@@ -32,7 +32,7 @@ export function OwnerLoginPage({
     if (onLoginSuccess) {
       onLoginSuccess();
     } else {
-      navigate('/owner/stores');
+      navigate("/owner/stores");
     }
   };
 
@@ -40,12 +40,12 @@ export function OwnerLoginPage({
     if (onBack) {
       onBack();
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
-  const [authMode, setAuthMode] = useState<AuthMode>('login');
+  const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [isLoading, setIsLoading] = useState(false);
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState("");
 
   const handleLogin = (_email: string, _password: string) => {
     setIsLoading(true);
@@ -67,22 +67,22 @@ export function OwnerLoginPage({
     // 회원가입 및 OTP 발송 시뮬레이션
     setTimeout(() => {
       setIsLoading(false);
-      setAuthMode('verify');
+      setAuthMode("verify");
       alert(`[인증번호 발송됨]\n${data.phone}로 인증번호 123456을 보냈습니다.`);
     }, 1000);
   };
 
   const handleVerify = (code: string) => {
-    if (code !== '123456') {
-      alert('인증번호가 일치하지 않습니다. (123456)');
+    if (code !== "123456") {
+      alert("인증번호가 일치하지 않습니다. (123456)");
       return;
     }
     setIsLoading(true);
     // 인증 시뮬레이션
     setTimeout(() => {
       setIsLoading(false);
-      alert('휴대폰 인증이 완료되었습니다. 로그인해주세요.');
-      setAuthMode('login');
+      alert("휴대폰 인증이 완료되었습니다. 로그인해주세요.");
+      setAuthMode("login");
     }, 1000);
   };
 
@@ -92,38 +92,38 @@ export function OwnerLoginPage({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center ${isTabletMode ? 'h-full w-full' : 'min-h-screen'} bg-kkookk-sand p-6`}
+      className={`flex flex-col items-center justify-center ${isTabletMode ? "h-full w-full" : "min-h-screen"} p-6`}
     >
       <div
-        className={`bg-white rounded-3xl shadow-xl p-8 w-full ${isTabletMode ? 'max-w-sm border border-slate-100' : 'max-w-md border border-slate-200'}`}
+        className={`bg-white rounded-3xl shadow-xl p-8 w-full ${isTabletMode ? "max-w-sm border border-slate-100" : "max-w-md border border-slate-200"}`}
       >
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-kkookk-navy mb-2">{title}</h2>
-          <p className="text-kkookk-steel text-sm">{subtitle}</p>
+        <div className="mb-8 text-center">
+          <h2 className="mb-2 text-2xl font-bold text-kkookk-navy">{title}</h2>
+          {subtitle && <p className="text-sm text-kkookk-steel">{subtitle}</p>}
         </div>
 
-        {authMode === 'login' && (
+        {authMode === "login" && (
           <LoginForm
             onSubmit={handleLogin}
-            onSwitchToSignup={() => setAuthMode('signup')}
+            onSwitchToSignup={() => setAuthMode("signup")}
             isLoading={isLoading}
           />
         )}
 
-        {authMode === 'signup' && (
+        {authMode === "signup" && (
           <SignupForm
             onSubmit={handleSignup}
-            onSwitchToLogin={() => setAuthMode('login')}
+            onSwitchToLogin={() => setAuthMode("login")}
             isLoading={isLoading}
           />
         )}
 
-        {authMode === 'verify' && (
+        {authMode === "verify" && (
           <PhoneVerification
             phone={phone}
             onVerify={handleVerify}
             onResend={handleResend}
-            onBack={() => setAuthMode('signup')}
+            onBack={() => setAuthMode("signup")}
             isLoading={isLoading}
           />
         )}
@@ -131,7 +131,7 @@ export function OwnerLoginPage({
 
       <button
         onClick={handleBack}
-        className="mt-8 text-kkookk-steel text-sm hover:text-kkookk-navy flex items-center gap-1"
+        className="flex items-center gap-1 mt-4 text-sm text-kkookk-steel hover:text-kkookk-indigo"
       >
         <ChevronLeft size={16} /> 초기 화면으로
       </button>

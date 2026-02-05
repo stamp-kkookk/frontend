@@ -56,7 +56,7 @@ export function PhoneVerification({
         onChange={(e) => setVerificationCode(e.target.value)}
         placeholder="123456"
         icon={<KeyRound size={18} />}
-        className="tracking-widest font-mono"
+        className="tracking-widest font-mono focus:border-indigo-600!"
         maxLength={6}
         inputMode="numeric"
         autoComplete="one-time-code"
@@ -90,7 +90,7 @@ export function PhoneVerification({
         <button
           type="button"
           onClick={onResend}
-          className="text-sm text-kkookk-orange-500 hover:text-kkookk-orange-600"
+          className="text-sm text-kkookk-indigo hover:text-blue-700"
         >
           인증번호 재전송
         </button>
