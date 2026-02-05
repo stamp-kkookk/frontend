@@ -4,7 +4,7 @@
  */
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { ChevronLeft, MapPin, Loader2, AlertCircle } from 'lucide-react';
+import { ChevronLeft, MapPin, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 import { MigrationManager } from '@/features/migration/components/admin';
 import { useStore } from '@/features/store-management/hooks/useStore';
 import {
@@ -22,12 +22,22 @@ export function StoreMigrationsPage() {
 
   // API Hooks
   const { data: store, isLoading: storeLoading, error: storeError } = useStore(storeIdNum);
-  const { data: apiMigrations, isLoading: migrationsLoading } = useStoreMigrations(storeIdNum);
+  const {
+    data: apiMigrations,
+    isLoading: migrationsLoading,
+    refetch: refetchMigrations,
+    isFetching: isRefreshing,
+  } = useStoreMigrations(storeIdNum);
   const approveMigration = useApproveMigration();
   const rejectMigration = useRejectMigration();
 
+  const handleRefresh = () => {
+    refetchMigrations();
+  };
+
   // Transform API data to component format
-  const migrations = (apiMigrations ?? []).map((m) => ({
+  // Safely handle migrations data (could be array, paginated response, or undefined)
+  const migrations = (Array.isArray(apiMigrations) ? apiMigrations : []).map((m) => ({
     id: String(m.id),
     storeName: store?.name ?? '',
     count: m.claimedStampCount,
@@ -127,6 +137,8 @@ export function StoreMigrationsPage() {
           migrations={migrations}
           storeName={store.name}
           onAction={handleAction}
+          onRefresh={handleRefresh}
+          isRefreshing={isRefreshing}
         />
       </div>
     </div>

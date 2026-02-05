@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { formatShortDate } from '@/lib/utils/format';
@@ -14,12 +14,16 @@ interface MigrationManagerProps {
   migrations: MigrationRequest[];
   storeName: string;
   onAction: (id: string, newStatus: MigrationStatus, approvedCount?: number, rejectReason?: string) => void;
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
 }
 
 export function MigrationManager({
   migrations,
   storeName,
   onAction,
+  onRefresh,
+  isRefreshing = false,
 }: MigrationManagerProps) {
   const [viewImage, setViewImage] = useState<MigrationRequest | null>(null);
 
@@ -41,7 +45,22 @@ export function MigrationManager({
   return (
     <div className="p-8 h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold text-kkookk-navy">전환 신청 관리</h3>
+        <div className="flex items-center gap-3">
+          <h3 className="text-xl font-bold text-kkookk-navy">전환 신청 관리</h3>
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              disabled={isRefreshing}
+              className="p-2 text-kkookk-steel hover:text-kkookk-navy hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50"
+              title="새로고침"
+            >
+              <RefreshCw
+                size={18}
+                className={isRefreshing ? 'animate-spin' : ''}
+              />
+            </button>
+          )}
+        </div>
         <span className="text-sm text-kkookk-steel">
           총 {storeMigrations.length}건
         </span>
