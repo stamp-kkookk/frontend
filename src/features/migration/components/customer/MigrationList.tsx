@@ -49,7 +49,7 @@ export function MigrationList({
         </div>
         <button
           onClick={() => navigate("/customer/migrations/new")}
-          className="flex items-center justify-center w-8 h-8 text-white rounded-lg bg-kkookk-navy hover:bg-slate-800"
+          className="flex items-center justify-center w-8 h-8 text-white transition-colors duration-100 bg-gray-500 rounded-lg hover:bg-kkookk-orange-500"
           aria-label="새 신청"
         >
           <Plus size={20} />

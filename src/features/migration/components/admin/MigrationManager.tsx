@@ -82,7 +82,7 @@ export function MigrationManager({
                 <td className="p-4">
                   <button
                     onClick={() => setViewImage(mig.id)}
-                    className="flex items-center gap-1 text-xs font-bold text-kkookk-orange-500 hover:underline"
+                    className="flex items-center gap-1 text-xs font-bold text-kkookk-indigo hover:underline"
                   >
                     <ImageIcon size={14} /> 확인하기
                   </button>

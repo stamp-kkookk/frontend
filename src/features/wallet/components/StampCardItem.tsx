@@ -3,7 +3,7 @@
  * 지갑 캐러셀에서 개별 스탬프 카드 표시
  */
 
-import { Coffee, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StampCard } from '@/types/domain';
 
@@ -51,9 +51,10 @@ export function StampCardItem({
       </div>
 
       {/* 배경 아이콘 */}
-      <Coffee
-        className="absolute -right-2 -bottom-4 text-white/10 w-32 h-32 transform rotate-12"
-        strokeWidth={1}
+      <img
+        src="/image/cat_pace.png"
+        alt="Background"
+        className="absolute -right-12 -bottom-12 opacity-10 w-64 h-64 object-cover transform -rotate-12"
       />
 
       {/* 푸터 */}

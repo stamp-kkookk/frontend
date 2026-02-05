@@ -20,6 +20,9 @@ export function CustomerLoginForm({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
+  // 두 필드가 모두 입력되었는지 확인
+  const isFormValid = name.trim() !== '' && phone.trim() !== '';
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone) {
@@ -72,9 +75,10 @@ export function CustomerLoginForm({
 
         <Button
           type="submit"
-          variant="navy"
+          variant="primary"
           size="full"
           isLoading={isLoading}
+          disabled={!isFormValid}
           className="mt-4"
         >
           지갑 열기
