@@ -6,30 +6,46 @@
 import { cn } from "@/lib/utils";
 import type { StoreStatus } from "@/types/domain";
 import { Bell, History, LogOut, Settings } from "lucide-react";
-import type { TerminalTab } from "../types";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 interface TerminalSidebarProps {
   storeName: string;
   storeStatus: StoreStatus;
-  activeTab: TerminalTab;
   pendingCount: number;
-  onTabChange: (tab: TerminalTab) => void;
   onLogout: () => void;
 }
 
 export function TerminalSidebar({
   storeName,
   storeStatus,
-  activeTab,
   pendingCount,
-  onTabChange,
   onLogout,
 }: TerminalSidebarProps) {
-  const tabs: { id: TerminalTab; label: string; icon: React.ReactNode }[] = [
-    { id: "requests", label: "승인 대기", icon: <Bell size={20} /> },
-    { id: "history", label: "처리 내역", icon: <History size={20} /> },
-    { id: "settings", label: "설정", icon: <Settings size={20} /> },
+  const location = useLocation();
+  const { storeId } = useParams<{ storeId: string }>();
+
+  const tabs = [
+    {
+      id: "approval",
+      label: "승인 대기",
+      icon: <Bell size={20} />,
+      path: `/terminal/${storeId}/approval`,
+    },
+    {
+      id: "history",
+      label: "처리 내역",
+      icon: <History size={20} />,
+      path: `/terminal/${storeId}/history`,
+    },
+    {
+      id: "settings",
+      label: "설정",
+      icon: <Settings size={20} />,
+      path: `/terminal/${storeId}/settings`,
+    },
   ];
+
+  const isActive = (tabId: string) => location.pathname.includes(tabId);
 
   return (
     <div className="flex flex-col w-64 bg-white border-r border-slate-200">
@@ -57,24 +73,24 @@ export function TerminalSidebar({
       {/* 네비게이션 */}
       <nav className="flex-1 p-4 space-y-2">
         {tabs.map((tab) => (
-          <button
+          <Link
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
+            to={tab.path}
             className={cn(
               "w-full flex items-center gap-3 p-4 rounded-xl transition-all text-left",
-              activeTab === tab.id
+              isActive(tab.id)
                 ? "bg-kkookk-indigo/10 text-indigo-900 shadow-lg shadow-indigo-100"
                 : "text-kkookk-steel hover:bg-slate-50",
             )}
           >
             {tab.icon}
             <span className="font-bold">{tab.label}</span>
-            {tab.id === "requests" && pendingCount > 0 && (
+            {tab.id === "approval" && pendingCount > 0 && (
               <span className="ml-auto bg-kkookk-red text-white text-xs font-bold px-2 py-0.5 rounded-full">
                 {pendingCount}
               </span>
             )}
-          </button>
+          </Link>
         ))}
       </nav>
 

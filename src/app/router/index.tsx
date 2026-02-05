@@ -35,7 +35,12 @@ import {
 } from "@/pages/owner";
 
 // 터미널 페이지
-import { TerminalDashboardPage } from "@/features/terminal/pages/TerminalDashboardPage";
+import {
+  TerminalApprovalPage,
+  TerminalHistoryPage,
+  TerminalLoginPage,
+  TerminalSettingsPage,
+} from "@/pages/terminal";
 
 export const router = createBrowserRouter([
   // 랜딩 페이지
@@ -70,13 +75,18 @@ export const router = createBrowserRouter([
     ],
   },
 
+  // 사장님 로그인 (레이아웃 없음)
+  {
+    path: "/owner/login",
+    element: <OwnerLoginPage />,
+  },
+
   // 사장님 라우트
   {
     path: "/owner",
     element: <OwnerLayout />,
     children: [
       { index: true, element: <Navigate to="stores" replace /> },
-      { path: "login", element: <OwnerLoginPage /> },
       { path: "stores", element: <StoreListPage /> },
       { path: "stores/new", element: <StoreCreatePage /> },
       { path: "stores/:storeId", element: <StoreDetailPage /> },
@@ -93,11 +103,22 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // 터미널 라우트
+  // 터미널 로그인 (레이아웃 없음)
+  {
+    path: "/terminal/login",
+    element: <TerminalLoginPage />,
+  },
+
+  // 터미널 라우트 (레이아웃 포함)
   {
     path: "/terminal",
     element: <TerminalLayout />,
-    children: [{ path: ":storeId", element: <TerminalDashboardPage /> }],
+    children: [
+      { path: ":storeId", element: <Navigate to="approval" replace /> },
+      { path: ":storeId/approval", element: <TerminalApprovalPage /> },
+      { path: ":storeId/history", element: <TerminalHistoryPage /> },
+      { path: ":storeId/settings", element: <TerminalSettingsPage /> },
+    ],
   },
 ]);
 

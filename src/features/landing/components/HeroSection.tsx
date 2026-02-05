@@ -5,12 +5,14 @@
 
 import { Coffee, Stamp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -18,14 +20,15 @@ export function HeroSection() {
       {/* Headline + CTA - 중앙 배치 */}
       <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
         <AnimatedHeadline />
-        <button
+        <Link
+          to={"/simulation"}
           className={`px-8 py-4 text-lg font-bold text-white shadow-lg rounded-2xl bg-kkookk-orange-500 hover:bg-kkookk-orange-600 active:scale-95 shadow-kkookk-orange-500/30 hover:shadow-kkookk-orange-500/40 transition-all duration-500 ${
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
           style={{ transitionDelay: "350ms" }}
         >
           무료 스탬프 만들기
-        </button>
+        </Link>
       </div>
 
       {/* Carousel - 2개 레이어 교차 */}
@@ -42,7 +45,8 @@ function AnimatedHeadline() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // 텍스트를 줄과 부분별로 구성
@@ -165,7 +169,8 @@ function CarouselLayer({ cards, direction }: CarouselLayerProps) {
 
   // 페이드인 애니메이션
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // 자동 스크롤 + 무한 루프

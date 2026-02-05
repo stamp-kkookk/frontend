@@ -31,14 +31,14 @@ export function LauncherPage() {
           icon={<Tablet size={40} />}
           title="매장용 태블릿"
           desc="적립/사용 요청 실시간 승인, 영업 관리"
-          onClick={() => navigate("/terminal/store-1")}
+          onClick={() => navigate("/terminal/login")}
           color="bg-gray-500"
         />
         <LauncherCard
           icon={<Monitor size={40} />}
           title="사장님 백오피스"
           desc="스탬프 카드 설계, 스토어 관리"
-          onClick={() => navigate("/owner/stores")}
+          onClick={() => navigate("/owner/login")}
           color="bg-kkookk-indigo"
         />
       </div>
