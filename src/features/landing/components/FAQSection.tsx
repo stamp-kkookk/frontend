@@ -66,16 +66,18 @@ export function FAQSection() {
 
   return (
     <motion.section
+      id="faq"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6 }}
-      className="pb-48"
+      className="flex flex-col justify-center w-full min-h-screen py-16 snap-start"
       style={{
-        background: 'radial-gradient(ellipse 120% 80% at 50% 100%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)',
+        background:
+          "radial-gradient(ellipse 120% 80% at 50% 100%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)",
       }}
     >
-      <div className="max-w-4xl px-6 mx-auto">
+      <div className="w-full max-w-4xl px-6 mx-auto">
         <h2 className="mb-4 text-4xl font-bold text-center md:text-5xl text-kkookk-navy">
           FAQ
         </h2>
@@ -88,35 +90,40 @@ export function FAQSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="space-y-4"
+          className="flex flex-col space-y-4"
         >
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              className="overflow-hidden transition-all duration-300 bg-white border border-gray-200/50 rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02]"
+              className="w-full overflow-hidden transition-shadow duration-300 bg-white border shadow-lg border-gray-200/50 rounded-2xl hover:shadow-xl"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="flex items-center justify-between w-full p-6 text-left"
+                className="flex items-center justify-between w-full gap-4 p-6 text-left transition-colors hover:bg-gray-50/50"
               >
-                <h3 className="text-lg font-semibold text-kkookk-navy">
+                <h3 className="flex-1 text-lg font-semibold break-words text-kkookk-navy">
                   {faq.question}
                 </h3>
                 <motion.div
                   animate={{ rotate: activeIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
+                  className="flex-shrink-0 ml-2"
                 >
                   <ChevronDown className="w-5 h-5 text-kkookk-steel" />
                 </motion.div>
               </button>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {activeIndex === index && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      ease: [0.04, 0.62, 0.23, 0.98],
+                    }}
+                    className="overflow-hidden"
                   >
                     <div className="px-6 pb-6">
                       <p className="leading-relaxed text-kkookk-steel break-keep">

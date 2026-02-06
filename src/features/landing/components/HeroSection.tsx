@@ -1,12 +1,12 @@
 /**
  * HeroSection
- * 히어로 섹션 - 핵심 메시지 + CTA + 교차 캐러셀
+ * 히어로 섹션 - 핵심 메시지 + CTA + 스탬프 카드 캐러셀
  */
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatedHeadline } from "./AnimatedHeadline";
-import { CrossCarousel } from "./CrossCarousel";
+import { StampCardCarousel } from "./StampCardCarousel";
 
 export function HeroSection() {
   const [mounted, setMounted] = useState(false);
@@ -18,13 +18,15 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative pt-20 pb-10 overflow-hidden"
+      id="hero"
+      className="relative flex flex-col justify-center min-h-screen pt-20 pb-10 overflow-hidden snap-start snap-always"
       style={{
-        background: 'radial-gradient(ellipse 120% 80% at 50% 0%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)',
+        background:
+          "radial-gradient(ellipse 120% 80% at 50% 0%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)",
       }}
     >
       {/* Headline + CTA - 중앙 배치 */}
-      <div className="px-6 mx-auto mb-12 text-center max-w-7xl">
+      <div className="px-6 mx-auto mb-4 text-center max-w-7xl">
         <AnimatedHeadline />
         <Link
           to={"/simulation"}
@@ -43,8 +45,8 @@ export function HeroSection() {
         </Link>
       </div>
 
-      {/* Carousel - 2개 레이어 교차 */}
-      <CrossCarousel />
+      {/* Carousel - 스탬프 카드 미리보기 */}
+      <StampCardCarousel />
     </section>
   );
 }
