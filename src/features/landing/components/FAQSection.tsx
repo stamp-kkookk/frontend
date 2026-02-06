@@ -70,7 +70,10 @@ export function FAQSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6 }}
-      className="pb-48 bg-kkookk-navy-50"
+      className="pb-48"
+      style={{
+        background: 'radial-gradient(ellipse 120% 80% at 50% 100%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)',
+      }}
     >
       <div className="max-w-4xl px-6 mx-auto">
         <h2 className="mb-4 text-4xl font-bold text-center md:text-5xl text-kkookk-navy">

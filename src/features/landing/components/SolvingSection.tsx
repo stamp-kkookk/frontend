@@ -147,7 +147,7 @@ export function SolvingSection() {
   };
 
   return (
-    <section className="relative py-16 overflow-hidden bg-white sm:py-32">
+    <section className="relative py-16 overflow-hidden sm:py-32">
       <div className="px-6 mx-auto max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left: Text Content */}

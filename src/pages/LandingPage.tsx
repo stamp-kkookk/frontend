@@ -17,7 +17,7 @@ import { LandingHeader } from "@/features/landing/components/LandingHeader";
 
 export function LandingPage() {
   return (
-    <div className="relative min-h-screen isolate">
+    <div className="relative min-h-screen bg-white isolate">
       {/* Header */}
       <LandingHeader />
 

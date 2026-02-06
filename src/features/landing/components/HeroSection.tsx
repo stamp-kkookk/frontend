@@ -45,20 +45,6 @@ export function HeroSection() {
 
       {/* Carousel - 2개 레이어 교차 */}
       <CrossCarousel />
-
-      {/* Wave Divider - 자연스러운 전환 */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-        <svg
-          className="relative block w-full h-20"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0,0 C300,100 900,100 1200,0 L1200,120 L0,120 Z"
-            fill="#FFFFFF"
-          />
-        </svg>
-      </div>
     </section>
   );
 }
