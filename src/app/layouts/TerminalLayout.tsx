@@ -10,9 +10,9 @@ import {
   useApproveIssuance,
   useRejectIssuance,
 } from "@/features/terminal/hooks/useTerminal";
-import { useStore } from "@/features/store-management/hooks/useStore";
+import { useStorePublicInfo } from "@/hooks/useStorePublicInfo";
 import { useAuth } from "@/app/providers/AuthProvider";
-import type { StoreStatus } from "@/types/domain";
+import type { IssuanceRequest, StoreStatus } from "@/types/domain";
 import { useCallback, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 
@@ -21,12 +21,21 @@ export function TerminalLayout() {
   const { storeId } = useParams<{ storeId: string }>();
   const { logout } = useAuth();
   const [storeStatus, setStoreStatus] = useState<StoreStatus>("OPEN");
+  const [processedHistory, setProcessedHistory] = useState<IssuanceRequest[]>(
+    []
+  );
 
   const storeIdNum = Number(storeId) || 0;
 
   // API Hooks
-  const { data: store } = useStore(storeIdNum > 0 ? storeIdNum : undefined);
-  const { data: pendingData } = usePendingIssuanceRequests(storeIdNum > 0 ? storeIdNum : undefined);
+  const { data: storeInfo } = useStorePublicInfo(
+    storeIdNum > 0 ? storeIdNum : undefined
+  );
+  const {
+    data: pendingData,
+    isLoading,
+    error,
+  } = usePendingIssuanceRequests(storeIdNum > 0 ? storeIdNum : undefined);
   const approveIssuance = useApproveIssuance();
   const rejectIssuance = useRejectIssuance();
 
@@ -34,39 +43,66 @@ export function TerminalLayout() {
   const pendingCount = pendingData?.count ?? 0;
 
   // 매장 이름
-  const storeName = store?.name ?? (storeId === "demo" ? "카페 루나" : `매장 ${storeId}`);
+  const storeName = storeInfo?.storeName ?? `매장 ${storeId}`;
 
   // 요청 목록 변환 (API 응답을 컴포넌트 형식으로)
-  const requests = (pendingData?.items ?? []).map((item) => ({
-    id: String(item.id),
-    type: "stamp" as const,
-    user: item.customerName,
-    phone: "",
-    count: 1,
-    time: new Date(item.requestedAt),
-    status: "pending" as const,
-    store: storeName,
-    remainingSeconds: item.remainingSeconds,
-  }));
+  const requests: IssuanceRequest[] = (pendingData?.items ?? []).map(
+    (item) => ({
+      id: String(item.id),
+      type: "stamp" as const,
+      user: item.customerName,
+      phone: "",
+      count: 1,
+      time: new Date(item.requestedAt),
+      status: "pending" as const,
+      store: storeName,
+    })
+  );
 
   const handleLogout = useCallback(() => {
     logout();
     navigate("/simulation");
   }, [logout, navigate]);
 
-  const approve = useCallback((id: string) => {
-    approveIssuance.mutate({
-      storeId: storeIdNum,
-      requestId: Number(id),
-    });
-  }, [approveIssuance, storeIdNum]);
+  const approve = useCallback(
+    (id: string) => {
+      const request = requests.find((r) => r.id === id);
+      approveIssuance.mutate(
+        { storeId: storeIdNum, requestId: Number(id) },
+        {
+          onSuccess: () => {
+            if (request) {
+              setProcessedHistory((prev) => [
+                { ...request, status: "approved" as const, time: new Date() },
+                ...prev,
+              ]);
+            }
+          },
+        }
+      );
+    },
+    [approveIssuance, storeIdNum, requests]
+  );
 
-  const reject = useCallback((id: string) => {
-    rejectIssuance.mutate({
-      storeId: storeIdNum,
-      requestId: Number(id),
-    });
-  }, [rejectIssuance, storeIdNum]);
+  const reject = useCallback(
+    (id: string) => {
+      const request = requests.find((r) => r.id === id);
+      rejectIssuance.mutate(
+        { storeId: storeIdNum, requestId: Number(id) },
+        {
+          onSuccess: () => {
+            if (request) {
+              setProcessedHistory((prev) => [
+                { ...request, status: "rejected" as const, time: new Date() },
+                ...prev,
+              ]);
+            }
+          },
+        }
+      );
+    },
+    [rejectIssuance, storeIdNum, requests]
+  );
 
   const toggleStoreStatus = useCallback(() => {
     setStoreStatus((prev) => (prev === "OPEN" ? "CLOSED" : "OPEN"));
@@ -87,6 +123,9 @@ export function TerminalLayout() {
               requests,
               approve,
               reject,
+              processedHistory,
+              isLoading,
+              error,
               storeStatus,
               toggleStoreStatus,
             }}

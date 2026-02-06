@@ -45,9 +45,10 @@ export async function getMigrationList(): Promise<MigrationListItemResponse[]> {
 export async function getStoreMigrations(
   storeId: number
 ): Promise<MigrationRequestResponse[]> {
-  return getRaw<MigrationRequestResponse[]>(
+  const response = await getRaw<{ migrations: MigrationRequestResponse[] }>(
     API_ENDPOINTS.OWNER.STORE_MIGRATIONS(storeId)
   );
+  return response.migrations;
 }
 
 export async function getStoreMigration(

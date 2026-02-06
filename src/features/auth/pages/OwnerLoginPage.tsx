@@ -17,6 +17,7 @@ interface OwnerLoginPageProps {
   title?: string;
   subtitle?: string;
   onLoginSuccess?: () => void;
+  onLoginSuccessWithCredentials?: (email: string, password: string) => void;
   onBack?: () => void;
   isTabletMode?: boolean;
 }
@@ -25,6 +26,7 @@ export function OwnerLoginPage({
   title = "사장님 백오피스",
   subtitle = "",
   onLoginSuccess,
+  onLoginSuccessWithCredentials,
   onBack,
   isTabletMode = false,
 }: OwnerLoginPageProps) {
@@ -69,6 +71,7 @@ export function OwnerLoginPage({
       { email, password },
       {
         onSuccess: () => {
+          onLoginSuccessWithCredentials?.(email, password);
           handleLoginSuccess();
         },
         onError: (error) => {

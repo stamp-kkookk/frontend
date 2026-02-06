@@ -8,7 +8,7 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { StampCardCreateForm } from '@/features/store-management/components';
 import { useStore } from '@/features/store-management/hooks/useStore';
 import { useCreateStampCard } from '@/features/store-management/hooks/useStampCard';
-import type { AdminStampCard } from '@/types/domain';
+import type { CreateStampCardRequest } from '@/types/api';
 
 export function StampCardCreatePage() {
   const navigate = useNavigate();
@@ -42,24 +42,9 @@ export function StampCardCreatePage() {
     );
   }
 
-  const handleSubmit = (card: Omit<AdminStampCard, 'id'>) => {
-    // Convert from AdminStampCard to CreateStampCardRequest
-    const match = card.benefit?.match(/(\d+)개 적립 시 (.+)/);
-    const goalStampCount = match ? parseInt(match[1], 10) : 10;
-    const rewardName = match ? match[2] : card.benefit || '리워드';
-
+  const handleSubmit = (data: CreateStampCardRequest) => {
     createStampCard.mutate(
-      {
-        storeId: storeIdNum,
-        data: {
-          title: card.name,
-          goalStampCount,
-          rewardName,
-          rewardQuantity: 1,
-          expireDays: 30,
-          description: `${goalStampCount}개 적립 완료 시 ${rewardName} 제공`,
-        },
-      },
+      { storeId: storeIdNum, data },
       {
         onSuccess: () => {
           navigate(`/owner/stores/${storeId}`);

@@ -4,7 +4,8 @@
  * 기존 mock/ui.old.js 구현을 기반으로 함
  */
 
-import type { AdminStampCard, StampCardDesign } from "@/types/domain";
+import type { StampCardDesign } from "@/types/domain";
+import type { CreateStampCardRequest, StampCardDesignType } from "@/types/api";
 import {
   Check,
   ChevronLeft,
@@ -16,7 +17,7 @@ import { useState } from "react";
 
 interface StampCardCreateFormProps {
   storeName: string;
-  onSubmit: (card: Omit<AdminStampCard, "id">) => void;
+  onSubmit: (data: CreateStampCardRequest) => void;
   onCancel: () => void;
 }
 
@@ -65,13 +66,29 @@ export function StampCardCreateForm({
   };
 
   const handleSubmit = () => {
-    const newCard: Omit<AdminStampCard, "id"> = {
-      name: design.cardName,
-      status: "draft",
-      benefit: `${design.maxStamps}개 적립 시 ${design.reward}`,
-      created: new Date().toISOString().split("T")[0],
+    const designType: StampCardDesignType =
+      design.template === "custom" ? "IMAGE" : "COLOR";
+
+    const designJson =
+      designType === "IMAGE"
+        ? JSON.stringify({
+            backgroundImage: design.backgroundImage,
+            stampImage: design.stampImage,
+          })
+        : JSON.stringify({
+            color: design.color,
+          });
+
+    const request: CreateStampCardRequest = {
+      title: design.cardName,
+      goalStampCount: design.maxStamps,
+      rewardName: design.reward,
+      rewardQuantity: 1,
+      expireDays: 30,
+      designType,
+      designJson,
     };
-    onSubmit(newCard);
+    onSubmit(request);
   };
 
   const getColorClass = (color: string, type: "bg" | "shadow" = "bg") => {

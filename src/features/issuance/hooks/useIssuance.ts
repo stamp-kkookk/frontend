@@ -24,7 +24,6 @@ export function useCreateIssuanceRequest() {
   return useMutation({
     mutationFn: (data: CreateIssuanceRequest) => createIssuanceRequest(data),
     onSuccess: () => {
-      // Invalidate wallet data to reflect potential stamp changes
       queryClient.invalidateQueries({ queryKey: ['wallet'] });
     },
   });
@@ -35,35 +34,23 @@ export function useCreateIssuanceRequest() {
 // =============================================================================
 
 export function useIssuanceRequestStatus(
-  requestId: number | null | undefined,
-  options?: {
-    onApproved?: () => void;
-    onRejected?: () => void;
-    onExpired?: () => void;
-  }
+  requestId: number | undefined,
+  enabled: boolean
 ) {
   const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: QUERY_KEYS.issuanceRequest(requestId ?? 0),
     queryFn: () => getIssuanceRequest(requestId!),
-    enabled: !!requestId,
+    enabled: !!requestId && enabled,
     refetchInterval: (query) => {
       const data = query.state.data;
-      // Continue polling only if status is PENDING
       if (data?.status === 'PENDING' && data.remainingSeconds > 0) {
         return POLLING_INTERVAL_MS;
       }
 
-      // Stop polling and trigger callbacks
       if (data?.status === 'APPROVED') {
-        options?.onApproved?.();
-        // Invalidate wallet to refresh stamp count
         queryClient.invalidateQueries({ queryKey: ['wallet'] });
-      } else if (data?.status === 'REJECTED') {
-        options?.onRejected?.();
-      } else if (data?.status === 'EXPIRED') {
-        options?.onExpired?.();
       }
 
       return false;

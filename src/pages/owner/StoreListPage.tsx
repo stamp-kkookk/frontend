@@ -173,6 +173,7 @@ export function StoreListPage() {
       <QRPosterModal
         isOpen={!!qrModalStore}
         storeName={qrModalStore?.name || ""}
+        storeId={qrModalStore?.id}
         qrCodeBase64={qrData?.qrCodeBase64}
         isLoading={!!qrModalStore && !qrData}
         onClose={() => setQrModalStore(null)}

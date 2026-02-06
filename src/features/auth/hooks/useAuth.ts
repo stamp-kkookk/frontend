@@ -8,6 +8,7 @@ import {
   requestOtp,
   verifyOtp,
   registerWallet,
+  loginWallet,
   ownerSignup,
   ownerLogin,
   getStorePublicInfo,
@@ -23,6 +24,7 @@ import type {
   OtpRequestDto,
   OtpVerifyDto,
   WalletRegisterRequest,
+  WalletLoginRequest,
   OwnerSignupRequest,
   OwnerLoginRequest,
 } from '@/types/api';
@@ -58,6 +60,25 @@ export function useWalletRegister() {
     mutationFn: (data: WalletRegisterRequest) => registerWallet(data),
     onSuccess: (response) => {
       // Store customer token and user info
+      setAuthToken(response.accessToken, 'customer');
+      setUserInfo({
+        id: response.walletId,
+        name: response.name,
+        phone: response.phone,
+        nickname: response.nickname,
+      });
+    },
+  });
+}
+
+// =============================================================================
+// Wallet Login Hook
+// =============================================================================
+
+export function useWalletLogin() {
+  return useMutation({
+    mutationFn: (data: WalletLoginRequest) => loginWallet(data),
+    onSuccess: (response) => {
       setAuthToken(response.accessToken, 'customer');
       setUserInfo({
         id: response.walletId,

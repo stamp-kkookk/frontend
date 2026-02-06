@@ -12,6 +12,8 @@ import type {
   OtpVerifyResponse,
   WalletRegisterRequest,
   WalletRegisterResponse,
+  WalletLoginRequest,
+  WalletLoginResponse,
   OwnerSignupRequest,
   OwnerSignupResponse,
   OwnerLoginRequest,
@@ -50,6 +52,15 @@ export async function registerWallet(
   );
 }
 
+export async function loginWallet(
+  data: WalletLoginRequest
+): Promise<WalletLoginResponse> {
+  return postRaw<WalletLoginResponse, WalletLoginRequest>(
+    API_ENDPOINTS.PUBLIC.WALLET_LOGIN,
+    data
+  );
+}
+
 // =============================================================================
 // Public API - Store Info
 // =============================================================================
@@ -58,6 +69,10 @@ export async function getStorePublicInfo(
   storeId: number
 ): Promise<StorePublicInfoResponse> {
   return getRaw<StorePublicInfoResponse>(API_ENDPOINTS.PUBLIC.STORE_INFO(storeId));
+}
+
+export async function getPublicStores(): Promise<StorePublicInfoResponse[]> {
+  return getRaw<StorePublicInfoResponse[]>(API_ENDPOINTS.PUBLIC.STORES);
 }
 
 // =============================================================================

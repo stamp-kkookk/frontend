@@ -6,11 +6,26 @@
 import { getRaw, postRaw } from '@/lib/api/client';
 import { API_ENDPOINTS } from '@/lib/api/endpoints';
 import type {
+  TerminalLoginRequest,
+  TerminalLoginResponse,
   PendingIssuanceRequestListResponse,
   IssuanceApprovalResponse,
   IssuanceRejectionResponse,
   PendingRedeemSessionListResponse,
 } from '@/types/api';
+
+// =============================================================================
+// Terminal Auth
+// =============================================================================
+
+export async function terminalLogin(
+  data: TerminalLoginRequest
+): Promise<TerminalLoginResponse> {
+  return postRaw<TerminalLoginResponse, TerminalLoginRequest>(
+    API_ENDPOINTS.TERMINAL.LOGIN,
+    data
+  );
+}
 
 // =============================================================================
 // Issuance Requests
