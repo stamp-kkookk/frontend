@@ -66,6 +66,17 @@ export interface WalletRegisterRequest {
   phone: string;
   name: string;
   nickname: string;
+  storeId?: number;
+}
+
+export interface RegisteredStampCardInfo {
+  walletStampCardId: number;
+  stampCardId: number;
+  title: string;
+  goalStampCount: number;
+  designType: string;
+  designJson: string;
+  storeName: string;
 }
 
 export interface WalletRegisterResponse {
@@ -74,6 +85,7 @@ export interface WalletRegisterResponse {
   phone: string;
   name: string;
   nickname: string;
+  stampCard: RegisteredStampCardInfo | null;
 }
 
 export interface WalletLoginRequest {
@@ -240,8 +252,9 @@ export interface CreateMigrationRequest {
   claimedStampCount: number;
 }
 
-export type StampMigrationStatus = 'SUBMITTED' | 'APPROVED' | 'REJECTED';
+export type StampMigrationStatus = 'SUBMITTED' | 'APPROVED' | 'REJECTED' | 'CANCELED';
 
+// Customer: full migration detail (with base64 imageData)
 export interface MigrationRequestResponse {
   id: number;
   customerWalletId: number;
@@ -256,13 +269,40 @@ export interface MigrationRequestResponse {
   slaMessage: string;
 }
 
+// Customer: list item (no imageData)
 export interface MigrationListItemResponse {
   id: number;
   storeId: number;
-  storeName: string;
+  storeName?: string;
   status: StampMigrationStatus;
   claimedStampCount: number;
   approvedStampCount: number | null;
+  rejectReason: string | null;
+  requestedAt: string;
+  processedAt: string | null;
+}
+
+// Owner: migration list item (returned in { migrations: [...] } wrapper)
+export interface MigrationSummary {
+  id: number;
+  customerPhone: string;
+  customerName: string;
+  claimedStampCount: number;
+  status: StampMigrationStatus;
+  requestedAt: string;
+}
+
+// Owner: migration detail (with hosted imageUrl)
+export interface MigrationDetailResponse {
+  id: number;
+  customerWalletId: number;
+  customerPhone: string;
+  customerName: string;
+  imageUrl: string;
+  claimedStampCount: number;
+  status: StampMigrationStatus;
+  approvedStampCount: number | null;
+  rejectReason: string | null;
   requestedAt: string;
   processedAt: string | null;
 }
@@ -271,8 +311,22 @@ export interface MigrationApproveRequest {
   approvedStampCount: number;
 }
 
+export interface MigrationApproveResponse {
+  id: number;
+  status: string;
+  approvedStampCount: number;
+  processedAt: string;
+}
+
 export interface MigrationRejectRequest {
   rejectReason: string;
+}
+
+export interface MigrationRejectResponse {
+  id: number;
+  status: string;
+  rejectReason: string;
+  processedAt: string;
 }
 
 // =============================================================================
@@ -434,11 +488,28 @@ export interface StoreStatisticsResponse {
 }
 
 // =============================================================================
+// Stamp Events Types (Owner)
+// =============================================================================
+
+export type StampEventType = 'ISSUED' | 'MIGRATED' | 'MANUAL_ADJUST';
+
+export interface StampEventResponse {
+  id: number;
+  walletStampCardId: number;
+  customerName: string;
+  customerPhone: string;
+  type: StampEventType;
+  delta: number;
+  reason: string;
+  occurredAt: string;
+}
+
+// =============================================================================
 // Redeem Events Types (Owner)
 // =============================================================================
 
-export type OwnerRedeemEventType = 'CREATED' | 'COMPLETED' | 'EXPIRED';
-export type OwnerRedeemEventResult = 'SUCCESS' | 'FAILURE';
+export type OwnerRedeemEventType = 'REQUESTED' | 'COMPLETED';
+export type OwnerRedeemEventResult = 'SUCCESS' | 'FAILED';
 
 export interface RedeemEventResponse {
   id: number;
