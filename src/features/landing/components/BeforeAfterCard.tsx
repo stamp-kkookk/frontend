@@ -20,7 +20,7 @@ export function BeforeAfterCard({
 }: BeforeAfterCardProps) {
   return (
     <div
-      className="relative flex p-4 transition-all duration-300 bg-white group rounded-2xl shadow-kkookk-md hover:shadow-kkookk-lg"
+      className="relative flex p-4 transition-all duration-300 bg-white/0 backdrop-blur-sm group rounded-2xl shadow-kkookk-md hover:shadow-kkookk-lg"
       style={{ width: "400px", height: "360px" }}
     >
       {/* Before - 왼쪽 상단 */}

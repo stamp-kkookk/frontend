@@ -53,7 +53,7 @@ export function ProblemSection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      className="py-16 bg-kkookk-navy-50 "
+      className="py-40 bg-white"
     >
       <div className="px-6 mx-auto max-w-7xl">
         <h2 className="mb-20 text-4xl font-bold text-center sm:text-5xl text-kkookk-navy">

@@ -180,8 +180,8 @@ export function SolvingSection() {
                   transition={{ delay: index * 0.1 }}
                   className={`flex items-start gap-4 p-4 transition-all rounded-2xl ${
                     currentStep === index
-                      ? "bg-kkookk-indigo-50 border-2 border-kkookk-indigo"
-                      : "bg-white/50 border-2 border-transparent"
+                      ? "bg-kkookk-indigo-50 border-2 border-kkookk-indigo shadow-lg "
+                      : "bg-white border-2 border-transparent shadow-md "
                   }`}
                 >
                   <div

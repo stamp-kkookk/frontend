@@ -105,7 +105,7 @@ export function CarouselLayer({ cards, direction }: CarouselLayerProps) {
       onKeyDown={handleKeyDown}
     >
       <div
-        className="flex gap-2 py-4"
+        className="flex gap-2 py-4 "
         style={{
           transform: `translateX(${-offset}px)`,
           transition: isDragging ? "none" : "transform 0.1s linear",
