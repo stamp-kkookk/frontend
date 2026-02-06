@@ -76,46 +76,95 @@ export interface WalletRegisterResponse {
   nickname: string;
 }
 
+export interface WalletLoginRequest {
+  phone: string;
+  name: string;
+  storeId: number;
+}
+
+export interface WalletLoginStampCard {
+  walletStampCardId: number;
+  stampCardId: number;
+  title: string;
+  goalStampCount: number;
+  designType: StampCardDesignType;
+  designJson: string | null;
+  storeName: string;
+}
+
+export interface WalletLoginResponse {
+  accessToken: string;
+  walletId: number;
+  phone: string;
+  name: string;
+  nickname: string;
+  stampCard: WalletLoginStampCard | null;
+}
+
 export interface WalletStampCardListResponse {
   customerWalletId: number;
   customerName: string;
   stampCards: WalletStampCardSummary[];
 }
 
+export interface WalletStampCardStore {
+  storeId: number;
+  storeName: string;
+}
+
 export interface WalletStampCardSummary {
   walletStampCardId: number;
-  storeName: string;
-  stampCardTitle: string;
+  stampCardId: number;
+  title: string;
   currentStampCount: number;
   goalStampCount: number;
-  rewardName: string | null;
-  lastStampedAt: string | null;
-  designType: StampCardDesignType;
+  progressPercentage: number;
+  nextRewardName: string | null;
+  nextRewardQuantity: number | null;
+  stampsToNextReward: number;
+  expiresAt: string;
+  status: string;
   designJson: string | null;
+  store: WalletStampCardStore;
+  lastStampedAt: string | null;
 }
 
 export type StampCardSortType = 'LAST_STAMPED' | 'CREATED' | 'PROGRESS';
 
+export type StampHistoryEventType = 'ISSUED' | 'REVOKED' | 'EXPIRED' | 'MIGRATED';
+
 export interface StampHistoryItem {
   id: number;
-  stampCount: number;
-  issuedAt: string;
-  storeName: string;
+  type: StampHistoryEventType;
+  delta: number;
+  reason: string;
+  occurredAt: string;
+}
+
+export interface EventPageInfo {
+  pageNumber: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+  isLast: boolean;
 }
 
 export interface StampHistoryResponse {
-  history: StampHistoryItem[];
-  pageInfo: PageInfo;
+  events: StampHistoryItem[];
+  pageInfo: EventPageInfo;
 }
 
 export interface WalletRewardItem {
-  walletRewardId: number;
+  id: number;
+  store: WalletStampCardStore;
   rewardName: string;
-  storeName: string;
   stampCardTitle: string;
   status: WalletRewardStatus;
   issuedAt: string;
   expiresAt: string;
+  redeemedAt: string | null;
+  designType: string | null;
+  designJson: string | null;
 }
 
 export interface WalletRewardListResponse {
@@ -123,15 +172,20 @@ export interface WalletRewardListResponse {
   pageInfo: PageInfo;
 }
 
+export type RedeemEventType = 'REQUESTED' | 'COMPLETED';
+export type RedeemEventResult = 'SUCCESS' | 'FAILED';
+
 export interface RedeemHistoryItem {
   id: number;
-  rewardName: string;
-  storeName: string;
-  redeemedAt: string;
+  redeemSessionId: number;
+  store: WalletStampCardStore;
+  type: RedeemEventType;
+  result: RedeemEventResult;
+  occurredAt: string;
 }
 
 export interface RedeemHistoryResponse {
-  history: RedeemHistoryItem[];
+  events: RedeemHistoryItem[];
   pageInfo: PageInfo;
 }
 
@@ -347,6 +401,7 @@ export interface StampCardSummary {
   rewardName: string | null;
   rewardQuantity: number | null;
   expireDays: number | null;
+  designType: StampCardDesignType;
   createdAt: string;
 }
 
@@ -394,6 +449,23 @@ export interface RedeemEventResponse {
   type: RedeemEventType;
   result: RedeemEventResult;
   occurredAt: string;
+}
+
+// =============================================================================
+// Terminal Auth Types
+// =============================================================================
+
+export interface TerminalLoginRequest {
+  email: string;
+  password: string;
+  storeId: number;
+}
+
+export interface TerminalLoginResponse {
+  accessToken: string;
+  ownerId: number;
+  storeId: number;
+  storeName: string;
 }
 
 // =============================================================================
@@ -445,3 +517,20 @@ export interface PendingRedeemSessionListResponse {
 // =============================================================================
 
 export type WalletRewardStatus = 'AVAILABLE' | 'REDEEMING' | 'REDEEMED' | 'EXPIRED';
+
+// =============================================================================
+// Store Summary Types (Customer)
+// =============================================================================
+
+export interface StoreSummaryStampCard {
+  stampCardId: number;
+  title: string;
+  rewardName: string | null;
+  goalStampCount: number;
+  designJson: string | null;
+}
+
+export interface StoreSummaryResponse {
+  storeName: string;
+  stampCard: StoreSummaryStampCard | null;
+}

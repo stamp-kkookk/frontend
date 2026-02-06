@@ -4,25 +4,33 @@
  */
 
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { QrCode, Loader2 } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/Button';
+import { useCustomerNavigate } from '@/hooks/useCustomerNavigate';
 import { useWalletStampCards } from '@/features/wallet/hooks/useWallet';
-import { useCreateIssuanceRequest, useIssuanceRequestStatus } from '@/features/issuance/hooks/useIssuance';
+import { useCreateIssuanceRequest, useIssuanceRequestStatus, generateIdempotencyKey } from '@/features/issuance/hooks/useIssuance';
+import { getWalletStampCards } from '@/features/wallet/api/walletApi';
+import { QUERY_KEYS } from '@/lib/api/endpoints';
 import { RequestingView } from './RequestingView';
 import { RequestResultView } from './RequestResultView';
+import { RewardAchievedView } from './RewardAchievedView';
 
-type RequestState = 'idle' | 'pending' | 'approved' | 'rejected' | 'expired';
+type RequestState = 'idle' | 'pending' | 'approved' | 'rewarded' | 'rejected' | 'expired';
 
 export function RequestStampButton() {
-  const navigate = useNavigate();
+  const { storeId, customerNavigate } = useCustomerNavigate();
   const { cardId } = useParams<{ cardId: string }>();
   const [requestState, setRequestState] = useState<RequestState>('idle');
   const [requestId, setRequestId] = useState<number | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const storeIdNum = storeId ? Number(storeId) : undefined;
+  const queryClient = useQueryClient();
 
   // Get wallet stamp cards to find current card info
-  const { data: walletData } = useWalletStampCards();
-  const card = walletData?.find((c) => String(c.id) === cardId);
+  const { data: walletData } = useWalletStampCards(storeIdNum);
+  const card = walletData?.stampCards?.find((c) => String(c.walletStampCardId) === cardId);
 
   // Create issuance request mutation
   const createIssuance = useCreateIssuanceRequest();
@@ -36,7 +44,11 @@ export function RequestStampButton() {
   // Update state based on polling result
   if (requestStatus && requestState === 'pending') {
     if (requestStatus.status === 'APPROVED') {
-      setRequestState('approved');
+      if (requestStatus.rewardsIssued && requestStatus.rewardsIssued > 0) {
+        setRequestState('rewarded');
+      } else {
+        setRequestState('approved');
+      }
     } else if (requestStatus.status === 'REJECTED') {
       setRequestState('rejected');
     } else if (requestStatus.status === 'EXPIRED') {
@@ -48,7 +60,11 @@ export function RequestStampButton() {
     if (!card) return;
 
     createIssuance.mutate(
-      { walletId: card.id },
+      {
+        storeId: card.store.storeId,
+        walletStampCardId: card.walletStampCardId,
+        idempotencyKey: generateIdempotencyKey(),
+      },
       {
         onSuccess: (data) => {
           setRequestId(data.id);
@@ -62,7 +78,31 @@ export function RequestStampButton() {
   };
 
   const handleBack = () => {
-    navigate(`/customer/wallet/${cardId}`);
+    customerNavigate(`/wallet/${cardId}`);
+  };
+
+  const handleGoToRewards = () => {
+    customerNavigate('/redeems');
+  };
+
+  const handleViewNewCard = async () => {
+    if (!storeIdNum) return;
+    setIsNavigating(true);
+    try {
+      await queryClient.invalidateQueries({ queryKey: ['wallet'] });
+      const fresh = await queryClient.fetchQuery({
+        queryKey: QUERY_KEYS.walletStampCards(storeIdNum),
+        queryFn: () => getWalletStampCards(storeIdNum),
+      });
+      const newCard = fresh?.stampCards
+        ?.filter((c) => c.store.storeId === storeIdNum && c.currentStampCount === 0)
+        ?.sort((a, b) => b.walletStampCardId - a.walletStampCardId)?.[0];
+      customerNavigate(newCard ? `/wallet/${newCard.walletStampCardId}` : '/wallet');
+    } catch {
+      customerNavigate('/wallet');
+    } finally {
+      setIsNavigating(false);
+    }
   };
 
   // Pending state - show waiting screen
@@ -76,11 +116,24 @@ export function RequestStampButton() {
     );
   }
 
+  // Rewarded state - show celebration
+  if (requestState === 'rewarded') {
+    return (
+      <RewardAchievedView
+        rewardName={card?.nextRewardName ?? undefined}
+        onGoToRewards={handleGoToRewards}
+        onViewNewCard={handleViewNewCard}
+        isLoading={isNavigating}
+      />
+    );
+  }
+
   // Approved state
   if (requestState === 'approved') {
     return (
       <RequestResultView
         success={true}
+        stampCount={requestStatus?.currentStampCount}
         onConfirm={handleBack}
       />
     );

@@ -3,52 +3,104 @@
  * 스탬프 카드 캐러셀이 포함된 메인 지갑 뷰
  */
 
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { WalletHeader } from '../components/WalletHeader';
 import { StampCardCarousel } from '../components/StampCardCarousel';
-import { useWalletStampCards } from '../hooks/useWallet';
-import { useAuth } from '@/app/providers/AuthProvider';
-import type { StampCard, StampCardTheme } from '@/types/domain';
+import { useWalletStampCards, useStoreSummary } from '../hooks/useWallet';
+import { useCustomerNavigate } from '@/hooks/useCustomerNavigate';
+import { parseDesignJson } from '../utils/cardDesign';
+import type { StampCard } from '@/types/domain';
 
 interface CustomerLayoutContext {
   setIsMenuOpen: (open: boolean) => void;
+  setCurrentStoreId: (storeId: number | undefined) => void;
 }
 
-// Design type to theme mapping
-const designTypeToTheme: Record<string, StampCardTheme> = {
-  COLOR: 'orange',
-  IMAGE: 'green',
-  PUZZLE: 'yellow',
-};
-
 export function WalletPage() {
-  const navigate = useNavigate();
-  const { setIsMenuOpen } = useOutletContext<CustomerLayoutContext>();
-  const { user } = useAuth();
+  const { storeId, customerNavigate } = useCustomerNavigate();
+  const { setIsMenuOpen, setCurrentStoreId } = useOutletContext<CustomerLayoutContext>();
+  const storeIdNum = storeId ? Number(storeId) : undefined;
+  const { data: storeSummary } = useStoreSummary(storeIdNum);
 
-  // API Hook - use user info from auth context
-  const { data: walletData, isLoading, error, refetch } = useWalletStampCards(
-    user?.phone && user?.name
-      ? { phone: user.phone, name: user.name }
-      : null
-  );
+  // API Hook - JWT identifies the customer, storeId scopes the store
+  const { data: walletData, isLoading, error, refetch } = useWalletStampCards(storeIdNum);
 
-  // Transform API data to StampCard format
-  const cards: StampCard[] = (walletData?.stampCards ?? []).map((apiCard) => ({
-    id: String(apiCard.walletStampCardId),
-    storeName: apiCard.storeName,
-    current: apiCard.currentStampCount,
-    max: apiCard.goalStampCount,
-    reward: apiCard.rewardName || '리워드',
-    theme: designTypeToTheme[apiCard.designType] || 'orange',
-    status: 'active',
-    bgGradient: 'from-[var(--color-kkookk-orange-500)] to-[#E04F00]',
-    shadowColor: 'shadow-orange-200',
-  }));
+  // Transform API data to StampCard format, current store card first
+  const cards: StampCard[] = useMemo(() => {
+    const apiCards = walletData?.stampCards ?? [];
+
+    // Sort: current store's cards first (by storeId match)
+    const sorted = [...apiCards].sort((a, b) => {
+      const aMatch = a.store.storeId === storeIdNum ? 0 : 1;
+      const bMatch = b.store.storeId === storeIdNum ? 0 : 1;
+      return aMatch - bMatch;
+    });
+
+    const mapped = sorted.map((apiCard) => {
+      const style = parseDesignJson(apiCard.designJson);
+      return {
+        id: String(apiCard.walletStampCardId),
+        storeId: apiCard.store.storeId,
+        storeName: apiCard.store.storeName,
+        current: apiCard.currentStampCount,
+        max: apiCard.goalStampCount,
+        reward: apiCard.nextRewardName || '리워드',
+        theme: 'orange' as const,
+        status: 'active' as const,
+        bgGradient: style.bgGradient,
+        shadowColor: style.shadowColor,
+        stampColor: style.stampColor,
+        backgroundImage: style.backgroundImage,
+        stampImage: style.stampImage,
+      };
+    });
+
+    // If wallet has no card for this store, add a preview from summary
+    const hasCurrentStoreCard = apiCards.some(
+      (c) => c.store.storeId === storeIdNum
+    );
+
+    if (!hasCurrentStoreCard) {
+      const summaryCard = storeSummary?.stampCard;
+      const summaryStoreName = storeSummary?.storeName;
+      if (summaryCard && summaryStoreName) {
+        const summaryStyle = parseDesignJson(summaryCard.designJson);
+        const previewCard: StampCard = {
+          id: `summary-${summaryCard.stampCardId}`,
+          storeName: summaryStoreName,
+          current: 0,
+          max: summaryCard.goalStampCount,
+          reward: summaryCard.rewardName || '리워드',
+          theme: 'orange',
+          status: 'active',
+          bgGradient: summaryStyle.bgGradient,
+          shadowColor: summaryStyle.shadowColor,
+          stampColor: summaryStyle.stampColor,
+          backgroundImage: summaryStyle.backgroundImage,
+          stampImage: summaryStyle.stampImage,
+        };
+        return [previewCard, ...mapped];
+      }
+    }
+
+    return mapped;
+  }, [walletData?.stampCards, storeSummary, storeIdNum]);
+
+  // 첫 번째 카드의 storeId로 초기화
+  useEffect(() => {
+    if (cards.length > 0) {
+      setCurrentStoreId(cards[0].storeId);
+    }
+  }, [cards, setCurrentStoreId]);
+
+  const handleCardChange = (card: StampCard) => {
+    setCurrentStoreId(card.storeId);
+  };
 
   const handleCardSelect = (card: StampCard) => {
-    navigate(`/customer/wallet/${card.id}`);
+    customerNavigate(`/wallet/${card.id}`);
   };
 
   // Loading state
@@ -104,7 +156,7 @@ export function WalletPage() {
       <WalletHeader onMenuClick={() => setIsMenuOpen(true)} />
 
       <div className="flex-1 flex flex-col justify-center">
-        <StampCardCarousel cards={cards} onCardSelect={handleCardSelect} />
+        <StampCardCarousel cards={cards} onCardSelect={handleCardSelect} onCardChange={handleCardChange} />
       </div>
     </div>
   );

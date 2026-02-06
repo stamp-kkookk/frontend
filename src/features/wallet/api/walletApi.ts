@@ -9,27 +9,27 @@ import type {
   StampHistoryResponse,
   RedeemHistoryResponse,
   WalletRewardListResponse,
-  StampCardSortType,
+  StoreSummaryResponse,
   WalletRewardStatus,
 } from '@/types/api';
+
+// =============================================================================
+// Store Summary
+// =============================================================================
+
+export async function getStoreSummary(storeId: number): Promise<StoreSummaryResponse> {
+  return getRaw<StoreSummaryResponse>(API_ENDPOINTS.CUSTOMER.STORE_SUMMARY(storeId));
+}
 
 // =============================================================================
 // Wallet Stamp Cards
 // =============================================================================
 
-export interface GetWalletStampCardsParams {
-  phone: string;
-  name: string;
-  sortBy?: StampCardSortType;
-}
-
 export async function getWalletStampCards(
-  params: GetWalletStampCardsParams
+  storeId: number
 ): Promise<WalletStampCardListResponse> {
   return getRaw<WalletStampCardListResponse>(API_ENDPOINTS.CUSTOMER.WALLET_STAMP_CARDS, {
-    phone: params.phone,
-    name: params.name,
-    sortBy: params.sortBy,
+    storeId,
   });
 }
 
@@ -38,7 +38,7 @@ export async function getWalletStampCards(
 // =============================================================================
 
 export interface GetStampHistoryParams {
-  walletStampCardId: number;
+  storeId: number;
   page?: number;
   size?: number;
 }
@@ -47,7 +47,7 @@ export async function getStampHistory(
   params: GetStampHistoryParams
 ): Promise<StampHistoryResponse> {
   return getRaw<StampHistoryResponse>(
-    API_ENDPOINTS.CUSTOMER.STAMP_HISTORY(params.walletStampCardId),
+    API_ENDPOINTS.CUSTOMER.STAMP_HISTORY(params.storeId),
     {
       page: params.page ?? 0,
       size: params.size ?? 20,
@@ -60,17 +60,21 @@ export async function getStampHistory(
 // =============================================================================
 
 export interface GetRedeemHistoryParams {
+  storeId: number;
   page?: number;
   size?: number;
 }
 
 export async function getRedeemHistory(
-  params?: GetRedeemHistoryParams
+  params: GetRedeemHistoryParams
 ): Promise<RedeemHistoryResponse> {
-  return getRaw<RedeemHistoryResponse>(API_ENDPOINTS.CUSTOMER.REDEEM_HISTORY, {
-    page: params?.page ?? 0,
-    size: params?.size ?? 20,
-  });
+  return getRaw<RedeemHistoryResponse>(
+    API_ENDPOINTS.CUSTOMER.REDEEM_HISTORY(params.storeId),
+    {
+      page: params.page ?? 0,
+      size: params.size ?? 20,
+    }
+  );
 }
 
 // =============================================================================

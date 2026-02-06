@@ -10,7 +10,9 @@ export const API_ENDPOINTS = {
     OTP_REQUEST: '/api/public/otp/request',
     OTP_VERIFY: '/api/public/otp/verify',
     WALLET_REGISTER: '/api/public/wallet/register',
+    WALLET_LOGIN: '/api/public/wallet/login',
     STORE_INFO: (storeId: number) => `/api/public/stores/${storeId}`,
+    STORES: '/api/public/stores',
   },
 
   // ==========================================================================
@@ -18,10 +20,11 @@ export const API_ENDPOINTS = {
   // ==========================================================================
   CUSTOMER: {
     // Wallet
-    WALLET_STAMP_CARDS: '/api/customer/wallet/stamp-cards',
-    STAMP_HISTORY: (walletStampCardId: number) =>
-      `/api/customer/wallet/stamp-cards/${walletStampCardId}/history`,
-    REDEEM_HISTORY: '/api/customer/wallet/redeem-history',
+    WALLET_STAMP_CARDS: '/api/customer/wallet/my-stamp-cards',
+    STAMP_HISTORY: (storeId: number) =>
+      `/api/customer/wallet/stores/${storeId}/stamp-history`,
+    REDEEM_HISTORY: (storeId: number) =>
+      `/api/customer/wallet/stores/${storeId}/redeem-history`,
     WALLET_REWARDS: '/api/customer/wallet/rewards',
 
     // Issuance
@@ -36,6 +39,9 @@ export const API_ENDPOINTS = {
     // Migration
     MIGRATIONS: '/api/customer/migrations',
     MIGRATION: (id: number) => `/api/customer/migrations/${id}`,
+
+    // Store Summary
+    STORE_SUMMARY: (storeId: number) => `/api/customer/stores/${storeId}/summary`,
   },
 
   // ==========================================================================
@@ -74,6 +80,7 @@ export const API_ENDPOINTS = {
   // Terminal API (Terminal Token 필요)
   // ==========================================================================
   TERMINAL: {
+    LOGIN: '/api/public/terminal/login',
     ISSUANCE_REQUESTS: (storeId: number) => `/api/terminal/${storeId}/issuance-requests`,
     APPROVE_ISSUANCE: (storeId: number, requestId: number) =>
       `/api/terminal/${storeId}/issuance-requests/${requestId}/approve`,
@@ -86,13 +93,13 @@ export const API_ENDPOINTS = {
 // Query Key Factory for TanStack Query
 export const QUERY_KEYS = {
   // Customer
-  walletStampCards: (phone: string, name: string) =>
-    ['wallet', 'stampCards', { phone, name }] as const,
-  stampHistory: (walletStampCardId: number) =>
-    ['wallet', 'stampHistory', walletStampCardId] as const,
-  redeemHistory: () => ['wallet', 'redeemHistory'] as const,
+  walletStampCards: (storeId: number) => ['wallet', 'stampCards', storeId] as const,
+  stampHistory: (storeId: number) =>
+    ['wallet', 'stampHistory', storeId] as const,
+  redeemHistory: (storeId: number) => ['wallet', 'redeemHistory', storeId] as const,
   walletRewards: (status?: string) => ['wallet', 'rewards', { status }] as const,
   issuanceRequest: (id: number) => ['issuance', 'request', id] as const,
+  storeSummary: (storeId: number) => ['customer', 'store', storeId, 'summary'] as const,
   migrations: () => ['customer', 'migrations'] as const,
   migration: (id: number) => ['customer', 'migration', id] as const,
 
@@ -121,4 +128,5 @@ export const QUERY_KEYS = {
 
   // Public
   storePublicInfo: (storeId: number) => ['public', 'store', storeId] as const,
+  publicStores: () => ['public', 'stores'] as const,
 } as const;

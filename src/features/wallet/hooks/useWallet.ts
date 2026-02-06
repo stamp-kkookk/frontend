@@ -5,11 +5,11 @@
 
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import {
+  getStoreSummary,
   getWalletStampCards,
   getStampHistory,
   getRedeemHistory,
   getWalletRewards,
-  type GetWalletStampCardsParams,
   type GetStampHistoryParams,
   type GetRedeemHistoryParams,
   type GetWalletRewardsParams,
@@ -18,16 +18,28 @@ import { QUERY_KEYS } from '@/lib/api/endpoints';
 import { isStepUpValid } from '@/lib/api/tokenManager';
 
 // =============================================================================
+// Store Summary Hook
+// =============================================================================
+
+export function useStoreSummary(storeId: number | undefined) {
+  return useQuery({
+    queryKey: QUERY_KEYS.storeSummary(storeId!),
+    queryFn: () => getStoreSummary(storeId!),
+    enabled: !!storeId,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+// =============================================================================
 // Wallet Stamp Cards Hook
 // =============================================================================
 
-export function useWalletStampCards(params: GetWalletStampCardsParams | null) {
+export function useWalletStampCards(storeId: number | undefined) {
   return useQuery({
-    queryKey: params
-      ? QUERY_KEYS.walletStampCards(params.phone, params.name)
-      : ['wallet', 'stampCards', 'disabled'],
-    queryFn: () => getWalletStampCards(params!),
-    enabled: !!params?.phone && !!params?.name,
+    queryKey: QUERY_KEYS.walletStampCards(storeId!),
+    queryFn: () => getWalletStampCards(storeId!),
+    enabled: !!storeId,
+    refetchOnMount: 'always',
   });
 }
 
@@ -36,42 +48,43 @@ export function useWalletStampCards(params: GetWalletStampCardsParams | null) {
 // =============================================================================
 
 export function useStampHistory(
-  walletStampCardId: number | undefined,
-  options?: Omit<GetStampHistoryParams, 'walletStampCardId'>
+  storeId: number | undefined,
+  options?: Omit<GetStampHistoryParams, 'storeId'>
 ) {
   return useQuery({
-    queryKey: QUERY_KEYS.stampHistory(walletStampCardId ?? 0),
+    queryKey: QUERY_KEYS.stampHistory(storeId ?? 0),
     queryFn: () =>
       getStampHistory({
-        walletStampCardId: walletStampCardId!,
+        storeId: storeId!,
         page: options?.page,
         size: options?.size,
       }),
-    enabled: !!walletStampCardId && isStepUpValid(),
+    enabled: !!storeId && isStepUpValid(),
+    refetchOnMount: 'always',
   });
 }
 
 export function useStampHistoryInfinite(
-  walletStampCardId: number | undefined,
+  storeId: number | undefined,
   pageSize = 20
 ) {
   return useInfiniteQuery({
-    queryKey: [...QUERY_KEYS.stampHistory(walletStampCardId ?? 0), 'infinite'],
+    queryKey: [...QUERY_KEYS.stampHistory(storeId ?? 0), 'infinite'],
     queryFn: ({ pageParam = 0 }) =>
       getStampHistory({
-        walletStampCardId: walletStampCardId!,
+        storeId: storeId!,
         page: pageParam,
         size: pageSize,
       }),
     getNextPageParam: (lastPage) => {
       const { pageInfo } = lastPage;
-      if (pageInfo.number < pageInfo.totalPages - 1) {
-        return pageInfo.number + 1;
+      if (pageInfo.pageNumber < pageInfo.totalPages - 1) {
+        return pageInfo.pageNumber + 1;
       }
       return undefined;
     },
     initialPageParam: 0,
-    enabled: !!walletStampCardId && isStepUpValid(),
+    enabled: !!storeId && isStepUpValid(),
   });
 }
 
@@ -79,19 +92,32 @@ export function useStampHistoryInfinite(
 // Redeem History Hook (StepUp Required)
 // =============================================================================
 
-export function useRedeemHistory(options?: GetRedeemHistoryParams) {
+export function useRedeemHistory(
+  storeId: number | undefined,
+  options?: Omit<GetRedeemHistoryParams, 'storeId'>
+) {
   return useQuery({
-    queryKey: QUERY_KEYS.redeemHistory(),
-    queryFn: () => getRedeemHistory(options),
-    enabled: isStepUpValid(),
+    queryKey: QUERY_KEYS.redeemHistory(storeId ?? 0),
+    queryFn: () =>
+      getRedeemHistory({
+        storeId: storeId!,
+        page: options?.page,
+        size: options?.size,
+      }),
+    enabled: !!storeId && isStepUpValid(),
+    refetchOnMount: 'always',
   });
 }
 
-export function useRedeemHistoryInfinite(pageSize = 20) {
+export function useRedeemHistoryInfinite(
+  storeId: number | undefined,
+  pageSize = 20
+) {
   return useInfiniteQuery({
-    queryKey: [...QUERY_KEYS.redeemHistory(), 'infinite'],
+    queryKey: [...QUERY_KEYS.redeemHistory(storeId ?? 0), 'infinite'],
     queryFn: ({ pageParam = 0 }) =>
       getRedeemHistory({
+        storeId: storeId!,
         page: pageParam,
         size: pageSize,
       }),
@@ -103,7 +129,7 @@ export function useRedeemHistoryInfinite(pageSize = 20) {
       return undefined;
     },
     initialPageParam: 0,
-    enabled: isStepUpValid(),
+    enabled: !!storeId && isStepUpValid(),
   });
 }
 
@@ -133,8 +159,8 @@ export function useWalletRewardsInfinite(
       }),
     getNextPageParam: (lastPage) => {
       const { pageInfo } = lastPage;
-      if (pageInfo.number < pageInfo.totalPages - 1) {
-        return pageInfo.number + 1;
+      if (pageInfo.pageNumber < pageInfo.totalPages - 1) {
+        return pageInfo.pageNumber + 1;
       }
       return undefined;
     },
