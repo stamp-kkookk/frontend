@@ -15,6 +15,7 @@ import { useAuth } from "@/app/providers/AuthProvider";
 import type { IssuanceRequest, StoreStatus } from "@/types/domain";
 import { useCallback, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 
 export function TerminalLayout() {
   const navigate = useNavigate();
@@ -109,30 +110,33 @@ export function TerminalLayout() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-8 min-w-screen bg-kkookk-navy">
-      <div className="w-5xl min-h-[80vh] max-h-[90vh] bg-kkookk-sand rounded-4xl overflow-hidden shadow-2xl flex border-2 border-kkookk-steel relative">
-        <TerminalSidebar
-          storeName={storeName}
-          storeStatus={storeStatus}
-          pendingCount={pendingCount}
-          onLogout={handleLogout}
-        />
-        <div className="flex flex-col flex-1 bg-kkookk-sand">
-          <Outlet
-            context={{
-              requests,
-              approve,
-              reject,
-              processedHistory,
-              isLoading,
-              error,
-              storeStatus,
-              toggleStoreStatus,
-            }}
+    <>
+      <ScrollToTop />
+      <div className="flex items-center justify-center min-h-screen p-8 min-w-screen bg-kkookk-navy">
+        <div className="w-5xl min-h-[80vh] max-h-[90vh] bg-kkookk-sand rounded-4xl overflow-hidden shadow-2xl flex border-2 border-kkookk-steel relative">
+          <TerminalSidebar
+            storeName={storeName}
+            storeStatus={storeStatus}
+            pendingCount={pendingCount}
+            onLogout={handleLogout}
           />
+          <div className="flex flex-col flex-1 bg-kkookk-sand">
+            <Outlet
+              context={{
+                requests,
+                approve,
+                reject,
+                processedHistory,
+                isLoading,
+                error,
+                storeStatus,
+                toggleStoreStatus,
+              }}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

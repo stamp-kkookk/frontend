@@ -57,7 +57,7 @@ export function ProblemSection() {
       className="flex flex-col justify-center min-h-screen py-12 snap-start snap-always md:py-16"
     >
       <div className="px-6 mx-auto max-w-7xl">
-        <h2 className="mb-20 text-4xl font-bold text-center sm:text-5xl text-kkookk-navy">
+        <h2 className="mb-20 text-4xl font-bold text-center sm:text-5xl text-kkookk-navy break-keep">
           혹시 이런 고민, 하고 계신가요?
         </h2>
 

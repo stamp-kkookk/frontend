@@ -15,28 +15,36 @@ import {
 } from "@/features/landing/components";
 import { LandingHeader } from "@/features/landing/components/LandingHeader";
 import { ScrollIndicator } from "@/features/landing/components/ScrollIndicator";
+import { FloatingConsultButton } from "@/features/landing/components/FloatingConsultButton";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 
 export function LandingPage() {
   return (
-    <div className="relative min-h-screen bg-white isolate">
-      {/* Header */}
-      <LandingHeader />
+    <>
+      <ScrollToTop />
+      <div className="relative min-h-screen bg-white isolate">
+        {/* Header */}
+        <LandingHeader />
 
-      {/* Floating Scroll Indicator */}
-      <ScrollIndicator />
+        {/* Floating Scroll Indicator */}
+        <ScrollIndicator />
 
-      {/* Main Content - Scroll Snap Container (스크롤바 숨김) */}
-      <main className="snap-y snap-proximity overflow-y-auto h-screen [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <HeroSection />
-        <ProblemSection />
-        <SolvingSection />
-        <GuaranteeSection />
-        <ReviewSection />
-        <FAQSection />
-        {/* Footer - Inside snap container for smooth scrolling */}
-        <FooterSection />
-      </main>
-    </div>
+        {/* Floating Consult Button */}
+        <FloatingConsultButton />
+
+        {/* Main Content - Scroll Snap Container (스크롤바 숨김) */}
+        <main className="snap-y snap-proximity overflow-y-auto h-screen [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <HeroSection />
+          <ProblemSection />
+          <SolvingSection />
+          <GuaranteeSection />
+          <ReviewSection />
+          <FAQSection />
+          {/* Footer - Inside snap container for smooth scrolling */}
+          <FooterSection />
+        </main>
+      </div>
+    </>
   );
 }
 

@@ -11,6 +11,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { MobileFrame } from '@/components/layout/MobileFrame';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { clearOriginStoreId } from '@/hooks/useCustomerNavigate';
+import { ScrollToTop } from '@/components/shared/ScrollToTop';
 
 export function CustomerLayout() {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ export function CustomerLayout() {
       onMenuItemClick={handleMenuItemClick}
       onLogout={handleLogout}
     >
+      <ScrollToTop />
       <Outlet context={{ setIsMenuOpen, setCurrentStoreId }} />
     </MobileFrame>
   );

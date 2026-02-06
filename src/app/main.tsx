@@ -10,6 +10,11 @@ import { AuthProvider } from './providers/AuthProvider';
 import { router } from './router';
 import '../assets/styles/index.css';
 
+// 페이지 로드 시 스크롤 최상단으로 이동
+if ('scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryProvider>

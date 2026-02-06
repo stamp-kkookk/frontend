@@ -5,6 +5,7 @@
 
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/app/providers/AuthProvider";
+import { ScrollToTop } from "@/components/shared/ScrollToTop";
 
 export function OwnerLayout() {
   const navigate = useNavigate();
@@ -16,9 +17,11 @@ export function OwnerLayout() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-kkookk-sand">
-      {/* 헤더 */}
-      <header className="sticky top-0 z-50 flex items-center justify-between h-16 px-6 bg-white border-b border-slate-200">
+    <>
+      <ScrollToTop />
+      <div className="flex flex-col min-h-screen bg-kkookk-sand">
+        {/* 헤더 */}
+        <header className="sticky top-0 z-50 flex items-center justify-between h-16 px-6 bg-white border-b border-slate-200">
         <Link to={"/owner/stores"} className="flex items-center">
           <img
             src="/logo/logo_text_owner.png"
@@ -52,7 +55,8 @@ export function OwnerLayout() {
           <Outlet />
         </main>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
