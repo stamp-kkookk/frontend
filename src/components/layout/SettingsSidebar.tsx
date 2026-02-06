@@ -6,6 +6,7 @@
 import { MenuLink } from "@/components/shared/MenuLink";
 import { cn } from "@/lib/utils";
 import { FileText, Info, LogOut, Shield, X } from "lucide-react";
+import { useStepUpModal } from "@/app/providers/StepUpModalProvider";
 
 interface SettingsSidebarProps {
   isOpen?: boolean;
@@ -20,6 +21,8 @@ export function SettingsSidebar({
   onLogout,
   userName = "김고객님",
 }: SettingsSidebarProps) {
+  const { openStepUpModal } = useStepUpModal();
+
   // ESC 키로 닫기
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -80,8 +83,8 @@ export function SettingsSidebar({
             icon={<Shield size={20} />}
             label="본인 인증"
             onClick={() => {
-              // TODO: 본인 인증 페이지로 이동
-              console.log("본인 인증");
+              openStepUpModal();
+              onClose?.();
             }}
           />
           <MenuLink

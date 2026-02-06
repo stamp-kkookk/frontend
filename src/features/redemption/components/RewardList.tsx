@@ -5,13 +5,14 @@
 
 import type { Reward } from "@/types/domain";
 import type { WalletRewardItem } from "@/types/api";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft, Gift, Loader2 } from "lucide-react";
 import { useCustomerNavigate } from "@/hooks/useCustomerNavigate";
 import { RewardCard } from "./RewardCard";
 import { useWalletRewards } from "@/features/wallet/hooks/useWallet";
-import { isStepUpValid } from "@/lib/api/tokenManager";
-import { StepUpVerify } from "@/components/shared/StepUpVerify";
+import { useStepUpModal } from "@/app/providers/StepUpModalProvider";
 import { formatShortDate } from "@/lib/utils/format";
 
 function mapReward(item: WalletRewardItem): Reward {
@@ -28,9 +29,24 @@ function mapReward(item: WalletRewardItem): Reward {
 }
 
 export function RewardList() {
-  const { customerNavigate } = useCustomerNavigate();
-  const [stepUpValid, setStepUpValid] = useState(isStepUpValid());
+  const { customerNavigate, customerPath } = useCustomerNavigate();
+  const navigate = useNavigate();
+  const { isVerified, openStepUpModal } = useStepUpModal();
+  const queryClient = useQueryClient();
   const { data, isLoading } = useWalletRewards();
+
+  // 본인인증 체크 및 모달 트리거
+  useEffect(() => {
+    if (!isVerified) {
+      // 인증 안 되어 있으면 지갑 페이지로 돌아가고 모달 열기
+      navigate(customerPath('/wallet'), { replace: true });
+      openStepUpModal(() => {
+        // 인증 완료 후 쿼리 무효화 및 페이지 이동
+        queryClient.invalidateQueries({ queryKey: ['walletRewards'] });
+        navigate(customerPath('/redeems'));
+      });
+    }
+  }, [isVerified, openStepUpModal, queryClient, navigate, customerPath]);
 
   const rewards: Reward[] =
     data?.rewards?.map((item) => mapReward(item)) ?? [];
@@ -57,11 +73,7 @@ export function RewardList() {
 
       {/* 리워드 목록 */}
       <div className="p-6 space-y-4 overflow-y-auto">
-        {!stepUpValid ? (
-          <div className="flex items-center justify-center py-20">
-            <StepUpVerify onVerified={() => setStepUpValid(true)} />
-          </div>
-        ) : isLoading ? (
+        {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 text-kkookk-steel">
             <Loader2 size={32} className="animate-spin opacity-40 mb-4" />
             <p>리워드를 불러오는 중...</p>
