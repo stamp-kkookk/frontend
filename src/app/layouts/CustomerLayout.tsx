@@ -63,14 +63,23 @@ export function CustomerLayout() {
     navigate('/');
   };
 
+  // 로그인/회원가입 페이지에서는 BottomNavigationBar를 숨김
+  const isPreLoginPage = location.pathname.includes('/stores/') && (
+    location.pathname.endsWith('/customer') ||
+    location.pathname.endsWith('/login') ||
+    location.pathname.endsWith('/signup')
+  );
+
   return (
     <StepUpModalProvider>
       <MobileFrame
         bottomNav={
-          <BottomNavigationBar
-            activeKey={getActiveNavKey()}
-            onItemClick={handleBottomNavClick}
-          />
+          !isPreLoginPage ? (
+            <BottomNavigationBar
+              activeKey={getActiveNavKey()}
+              onItemClick={handleBottomNavClick}
+            />
+          ) : undefined
         }
         settingsSidebar={
           <SettingsSidebar
