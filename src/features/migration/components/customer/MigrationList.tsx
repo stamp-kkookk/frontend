@@ -3,16 +3,19 @@
  * 고객의 전환 요청 내역 뷰 (API 연동)
  */
 
+import { useStepUpModal } from "@/app/providers/StepUpModalProvider";
 import { Badge } from "@/components/ui/Badge";
+import { useMigrationList } from "@/features/migration/hooks/useMigration";
+import { useCustomerNavigate } from "@/hooks/useCustomerNavigate";
 import { formatShortDate } from "@/lib/utils/format";
-import type { MigrationListItemResponse, StampMigrationStatus } from "@/types/api";
+import type {
+  MigrationListItemResponse,
+  StampMigrationStatus,
+} from "@/types/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { ChevronLeft, FileText, Loader2, Plus } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
-import { ChevronLeft, Plus, FileText, Loader2 } from "lucide-react";
-import { useCustomerNavigate } from "@/hooks/useCustomerNavigate";
-import { useMigrationList } from "@/features/migration/hooks/useMigration";
-import { useStepUpModal } from "@/app/providers/StepUpModalProvider";
 
 function getStatusBadge(status: StampMigrationStatus) {
   switch (status) {
@@ -38,11 +41,11 @@ export function MigrationList() {
   useEffect(() => {
     if (!isVerified) {
       // 인증 안 되어 있으면 지갑 페이지로 돌아가고 모달 열기
-      navigate(customerPath('/wallet'), { replace: true });
+      navigate(customerPath("/wallet"), { replace: true });
       openStepUpModal(() => {
         // 인증 완료 후 쿼리 무효화 및 페이지 이동
-        queryClient.invalidateQueries({ queryKey: ['migrationList'] });
-        navigate(customerPath('/migrations'));
+        queryClient.invalidateQueries({ queryKey: ["migrationList"] });
+        navigate(customerPath("/migrations"));
       });
     }
   }, [isVerified, openStepUpModal, queryClient, navigate, customerPath]);
@@ -52,7 +55,7 @@ export function MigrationList() {
   return (
     <div className="flex flex-col h-full pt-12">
       {/* 헤더 */}
-      <div className="px-6 py-4 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between sticky top-0 z-10 -mt-12 pt-12">
+      <div className="px-6 py-4 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between sticky top-0 z-10 -mt-12 pt-4">
         <div className="flex items-center">
           <button
             onClick={() => customerNavigate("/wallet")}
