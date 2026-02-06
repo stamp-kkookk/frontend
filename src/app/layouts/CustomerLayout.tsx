@@ -16,6 +16,7 @@ import { StepUpModalProvider } from '@/app/providers/StepUpModalProvider';
 import { StepUpVerifyModal } from '@/components/shared/StepUpVerifyModal';
 import { clearOriginStoreId } from '@/hooks/useCustomerNavigate';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
+import { SplashScreen } from '@/components/shared/SplashScreen';
 
 export function CustomerLayout() {
   const navigate = useNavigate();
@@ -70,11 +71,26 @@ export function CustomerLayout() {
     location.pathname.endsWith('/signup')
   );
 
+  // 적립 요청 페이지에서도 BottomNavigationBar를 숨김
+  const hideBottomNav = isPreLoginPage || location.pathname.endsWith('/stamp');
+
+  // 랜딩 페이지에서만 스플래시 화면 표시
+  const isLandingPage = location.pathname.includes('/stores/') &&
+    location.pathname.endsWith('/customer') &&
+    urlStoreId !== undefined;
+
   return (
     <StepUpModalProvider>
+      {/* Splash Screen - only on landing page */}
+      {isLandingPage && (
+        <SplashScreen
+          imageSrc="/image/customer_init_splash.png"
+        />
+      )}
+
       <MobileFrame
         bottomNav={
-          !isPreLoginPage ? (
+          !hideBottomNav ? (
             <BottomNavigationBar
               activeKey={getActiveNavKey()}
               onItemClick={handleBottomNavClick}
