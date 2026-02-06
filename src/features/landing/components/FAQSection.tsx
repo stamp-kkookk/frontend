@@ -4,8 +4,9 @@
  */
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const faqs = [
   {
@@ -65,13 +66,18 @@ export function FAQSection() {
 
   return (
     <motion.section
+      id="faq"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6 }}
-      className="pb-16 bg-kkookk-navy-50"
+      className="flex flex-col justify-center w-full min-h-screen py-16 snap-start"
+      style={{
+        background:
+          "radial-gradient(ellipse 120% 80% at 50% 100%, #FFF7ED 0%, #FFFBF7 30%, #FFFFFF 100%)",
+      }}
     >
-      <div className="max-w-4xl px-6 mx-auto">
+      <div className="w-full max-w-4xl px-6 mx-auto">
         <h2 className="mb-4 text-4xl font-bold text-center md:text-5xl text-kkookk-navy">
           FAQ
         </h2>
@@ -84,35 +90,40 @@ export function FAQSection() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="space-y-4"
+          className="flex flex-col space-y-4"
         >
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
-              className="overflow-hidden bg-white border border-gray-200/50 rounded-2xl shadow-kkookk-sm"
+              className="w-full overflow-hidden transition-shadow duration-300 bg-white border shadow-lg border-gray-200/50 rounded-2xl hover:shadow-xl"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="flex items-center justify-between w-full p-6 text-left"
+                className="flex items-center justify-between w-full gap-4 p-6 text-left transition-colors hover:bg-gray-50/50"
               >
-                <h3 className="text-lg font-semibold text-kkookk-navy">
+                <h3 className="flex-1 text-lg font-semibold break-words text-kkookk-navy">
                   {faq.question}
                 </h3>
                 <motion.div
                   animate={{ rotate: activeIndex === index ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
+                  className="flex-shrink-0 ml-2"
                 >
                   <ChevronDown className="w-5 h-5 text-kkookk-steel" />
                 </motion.div>
               </button>
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {activeIndex === index && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      duration: 0.3,
+                      ease: [0.04, 0.62, 0.23, 0.98],
+                    }}
+                    className="overflow-hidden"
                   >
                     <div className="px-6 pb-6">
                       <p className="leading-relaxed text-kkookk-steel break-keep">
@@ -124,6 +135,36 @@ export function FAQSection() {
               </AnimatePresence>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* CTA 카드 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="p-8 mt-6 transition-all duration-300 bg-white border shadow-lg text-start border-gray-200/50 rounded-2xl hover:shadow-xl"
+        >
+          <h3 className="mb-2 text-xl font-bold md:text-2xl text-kkookk-navy">
+            다른 궁금하신 내용이 있으신가요?
+          </h3>
+          <p className="mb-6 text-lg text-kkookk-steel">
+            지금 바로 문의주세요!
+          </p>
+          <Link
+            to="/simulation"
+            className="relative inline-flex items-center justify-center px-8 py-3 overflow-hidden text-lg text-white transition-all duration-500 shadow-lg bg-kkookk-orange-500 rounded-2xl active:scale-95 group"
+          >
+            <span className="absolute inset-0 flex items-center justify-center transition-transform duration-200 ease-out group-hover:-translate-y-full">
+              바로 문의하기
+              <ChevronRight className="ml-2" />
+            </span>
+            <span className="absolute inset-0 flex items-center justify-center transition-transform duration-200 ease-out translate-y-full group-hover:translate-y-0">
+              바로 문의하기
+              <ChevronRight className="ml-2" />
+            </span>
+            <span className="invisible">바로 문의하기</span>
+          </Link>
         </motion.div>
       </div>
     </motion.section>

@@ -49,11 +49,12 @@ const itemVariants = {
 export function ProblemSection() {
   return (
     <motion.section
+      id="problem"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.6 }}
-      className="py-16 bg-kkookk-navy-50 "
+      className="flex flex-col justify-center min-h-screen py-12 snap-start snap-always md:py-16"
     >
       <div className="px-6 mx-auto max-w-7xl">
         <h2 className="mb-20 text-4xl font-bold text-center sm:text-5xl text-kkookk-navy">

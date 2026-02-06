@@ -89,14 +89,15 @@ const itemVariants = {
 export function ReviewSection() {
   return (
     <motion.section
+      id="review"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.6 }}
-      className="py-16 bg-kkookk-navy-50 sm:py-32"
+      className="min-h-screen snap-start flex flex-col justify-center py-16 bg-kkookk-navy-50"
     >
       <div className="px-6 mx-auto max-w-7xl">
-        <h2 className="mb-12 text-3xl font-semibold text-center leading-12 md:text-4xl text-kkookk-navy break-keep">
+        <h2 className="mb-12 text-4xl font-semibold text-center leading-12 md:text-5xl text-kkookk-navy break-keep">
           꾸욱과 함께 만든 스탬프,
           <br /> <b className="text-kkookk-orange-500">고객</b>들은 이렇게
           말합니다

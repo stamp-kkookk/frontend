@@ -70,7 +70,7 @@ export function GuaranteeSection() {
   };
 
   return (
-    <section className="relative py-16 overflow-hidden bg-white">
+    <section id="guarantee" className="relative min-h-screen snap-start overflow-hidden bg-white">
       {/* Noise texture overlay for depth */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"
@@ -79,7 +79,8 @@ export function GuaranteeSection() {
         }}
       />
 
-      <div className="px-6 mx-auto max-w-7xl">
+      <div className="flex flex-col justify-center min-h-screen py-16 md:py-20">
+        <div className="px-6 mx-auto max-w-7xl">
         {/* Editorial Header - Centered */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -89,12 +90,12 @@ export function GuaranteeSection() {
           className="max-w-4xl mx-auto mb-20 text-center"
         >
           {/* Extreme headline scale */}
-          <h2 className="mb-6 text-5xl font-bold md:text-5xl text-kkookk-navy">
+          <h2 className="mb-6 text-3xl sm:text-4xl md:text-5xl font-bold text-kkookk-navy">
             걱정 없이 시작하세요
           </h2>
 
           {/* Generous line-height for subheading */}
-          <p className="text-xl md:text-2xl text-kkookk-steel break-keep">
+          <p className="text-lg sm:text-xl md:text-2xl text-kkookk-steel break-keep">
             사장님의 비즈니스를 안전하게 지킵니다
           </p>
         </motion.div>
@@ -424,12 +425,13 @@ export function GuaranteeSection() {
           className="mt-10"
         >
           <div className="relative pl-8 border-l-4 border-kkookk-indigo-500">
-            <p className="text-2xl font-semibold text-kkookk-navy md:text-3xl">
+            <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-kkookk-navy">
               꾸욱은 사장님과 고객 모두를 위한 안전한 플랫폼이 될 것을
               <b className="text-kkookk-orange-500"> 약속</b>합니다.
             </p>
           </div>
         </motion.div>
+        </div>
       </div>
 
       {/* Subtle gradient accents */}

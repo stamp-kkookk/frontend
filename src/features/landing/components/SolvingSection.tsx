@@ -147,7 +147,7 @@ export function SolvingSection() {
   };
 
   return (
-    <section className="relative py-16 overflow-hidden bg-white sm:py-32">
+    <section id="solving" className="relative min-h-screen snap-start snap-always flex flex-col justify-center py-16 overflow-hidden">
       <div className="px-6 mx-auto max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left: Text Content */}
@@ -180,8 +180,8 @@ export function SolvingSection() {
                   transition={{ delay: index * 0.1 }}
                   className={`flex items-start gap-4 p-4 transition-all rounded-2xl ${
                     currentStep === index
-                      ? "bg-kkookk-indigo-50 border-2 border-kkookk-indigo"
-                      : "bg-white/50 border-2 border-transparent"
+                      ? "bg-kkookk-indigo-50 border-2 border-kkookk-indigo shadow-lg "
+                      : "bg-white border-2 border-transparent shadow-md "
                   }`}
                 >
                   <div

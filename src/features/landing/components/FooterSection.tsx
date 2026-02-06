@@ -5,7 +5,7 @@
 
 export function FooterSection() {
   return (
-    <footer className="py-16 text-sm text-white/70 bg-kkookk-navy">
+    <footer className="snap-start py-16 text-sm text-white/70 bg-kkookk-navy">
       <div className="px-6 mx-auto max-w-7xl">
         <div className="flex flex-col gap-12 mb-6 md:flex-row md:justify-between">
           {/* Logo Placeholder */}
